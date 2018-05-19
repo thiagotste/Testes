@@ -1,0 +1,111 @@
+header, section, aside, footer, article, nav{
+    display: block;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    margin: 0 auto;
+    width: 950px;
+}
+article span{
+    font-family: Arial Unicode MS, sans-serif;
+    color: darkblue;
+    text-decoration: none;
+    font-size: 11px;
+}
+#cpf_mensagem, #senha_mensagem, #conf_mensagem, #dtNascimento_mensagem,
+#telefone_mensagem, #celular_mensagem, #complemento_mensagem, #cod_mensagem{
+    font-size: 11px;
+    color: #6E6E6E;
+}
+.a1{
+    padding: 0.25em 4em 0.25em 0.85em;
+}
+section{
+   width: 950px;
+}
+section form{
+    margin-top: 2em;
+}
+section form label{
+    color: #6E6E6E;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+}
+section form input, #sexo{
+    margin-bottom: 0.75em;
+    font-size: 13px;
+}
+
+.pess1{
+    border-right: 1px solid gainsboro;
+    width: 444px;
+    padding-left: 3em;
+    margin-top: 1em;
+    margin-bottom: 3em;
+    clear: right;
+    float: left;
+}
+.pess2{
+    width: 415px;
+    float: left;
+    padding-left: 2em;
+    margin-top: 1.2em;
+}
+.end1{
+    margin-left: 3em;
+    margin-top: 1em;
+    width: 444px;
+    float: left;
+    border-right: 1px solid gainsboro;
+}
+.end2{
+    width: 415px;
+    float: right;
+    padding-left: 2em;
+    margin-top: .75em;
+}
+.cad{
+    margin-left: 2em;
+    font-size: 25px;
+    color: #848484;
+    font-weight: bold;
+    font-family: Arial Unicode MS, sans-serif;
+}
+#cpo{
+    color: #6E6E6E;
+    font-family: Arial Unicode MS, sans-serif;
+    font-size: 15px;
+}
+.ast{
+    color: red;
+    margin-left: 2em;
+}
+.lab{
+    color: red;
+    font-size: 13px;
+}
+.p1{
+    margin-top: 2em;
+}
+.p2{
+    clear: both;
+    margin-left: 2em;
+    font-size: 25px;
+    color: #848484;
+    font-weight: bold;
+    font-family: Arial Unicode MS, sans-serif;
+}
+.p3{
+    clear: both;
+    padding-top: 1em;
+    text-align: center;
+}
+.sFuncionario, .sAdministrador{
+    font-size: 14px;
+    color: #6E6E6E;
+    font-family: Arial Unicode MS, sans-serif;
+}
+

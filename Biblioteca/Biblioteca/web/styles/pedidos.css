@@ -1,0 +1,96 @@
+header, section, aside, nav, article, footer{
+    display: block;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    width: 950px;
+    margin: 0 auto;
+    border: 1px solid black;
+}
+#login{
+    font-family: Arial Unicode MS, sans-serif;
+    color: darkgrey;
+}
+#login span{
+    font-family: Arial Unicode MS, sans-serif;
+    color: darkblue;
+}
+#login a{
+    font-family: Arial Unicode MS, sans-serif;
+    color: darkblue;
+    text-decoration: none;
+    font-size: 11px;
+}
+#login a:hover{
+    font-family: Arial Unicode MS, sans-serif;
+    color: red;
+    text-decoration: underline;
+    font-size: 11px;
+}
+header{
+    padding-bottom: 1em;    
+}
+header img{
+    float: left;
+    margin: 0 15px;
+}
+header h1{
+    padding-top: 1em;
+    font-family: aharoni, serif;
+    font-size: 1.75em;
+    text-transform: uppercase;
+}
+header h2{
+    font-family: "calibri light", serif;
+    color: grey;
+    font-size: 1.75em;
+}
+aside{
+    border-top: 1px solid black;
+    float: left;
+    width: 300px;
+    border-right: 1px solid black;
+
+}
+section{
+    border-top: 1px solid black;
+    clear: left;
+    float: right;
+    width: 649px;    
+}
+footer{
+    clear: both;
+    border-top: 1px solid black;
+}
+footer p{
+    text-align: center;
+}
+nav{
+    clear: both;
+    margin-top: 1em;
+}
+
+#menu{
+    list-style: none;
+    padding: 0.75em 0em;
+    background: beige;
+}
+#menu li{
+    display: inline;
+    position: relative;
+}
+#menu li a{
+    text-decoration: none;
+    padding: 0.6em 1em;
+    font-size: 20px;
+    font-family: calibri, serif;
+    color: black;
+}
+#menu li a:hover, #menu li a:focus{
+    background: blue;
+    color: white;
+}
+

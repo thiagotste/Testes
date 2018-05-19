@@ -1,0 +1,49 @@
+header, section, aside, nav, article, footer{
+    display: block;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    width: 950px;
+    margin: 0 auto;
+}
+#sec2{
+    float: right;
+    width: 749px;    
+}
+#sec2 span{
+    color: red;
+    font-size: 13px;
+}
+#sec2 form{
+    margin-top: 2em;
+}
+#sec2 form label{
+    color: gray;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+}
+#sec2 form input{
+    margin-bottom: 0.75em;
+    font-size: 13px;
+    color: gray;
+    font-family: Arial, sans-serif;
+    width: 240px;
+}
+#sec2 form p{
+    margin-bottom: 0.75em;
+    font-size: 13px;
+    color: gray;
+    font-family: Arial, sans-serif;
+}
+input:required{
+    border: 1px solid red;
+}
+input:valid{
+    border: 1px solid green;
+}
+#prosseguir{
+    margin: 1em 0 0 7em;
+}

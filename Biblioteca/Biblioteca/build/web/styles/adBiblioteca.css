@@ -1,0 +1,69 @@
+header nav, section, aside, article, footer{
+    display: block;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    width: 950px;
+    margin: 0 auto;
+}
+section{
+   width: 948px;    
+}
+section form label{
+    color: #6E6E6E;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+}
+section form input{
+    margin-bottom: 0.75em;
+    font-size: 13px;
+}
+article span{
+    font-family: Arial Unicode MS, sans-serif;
+    color: darkblue;
+    text-decoration: none;
+    font-size: 11px;
+}
+#part1{
+    border-right: 1px solid gainsboro;
+    width: 444px;
+    padding-left: 3em;
+    margin-top: 1em;
+    margin-bottom: 3em;
+}
+#part2{
+    float: right;
+    width: 415px;
+    padding-left: 2em;
+    margin-top: 1.2em;
+}
+.p1{
+    margin-top: 2em;
+}
+.cad{
+    margin-left: 2em;
+    font-size: 25px;
+    color: #848484;
+    font-weight: bold;
+    font-family: Arial Unicode MS, sans-serif;
+}
+#cpo{
+    color: #6E6E6E;
+    font-family: Arial Unicode MS, sans-serif;
+    font-size: 15px;
+}
+.p3{
+    text-align: center;
+    margin-bottom: 1em;
+}
+.ast{
+    color: red;
+    margin-left: 2em;
+}
+.lab{
+    color: red;
+    font-size: 13px;
+}

@@ -1,0 +1,105 @@
+header, section, aside, nav, footer, article{
+    display: block;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    width: 950px;
+    margin: 0 auto;
+}
+section{
+    margin-top: 1.2em;
+}
+section form label{
+    color: #6E6E6E;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+}
+section form input{
+    margin-bottom: 0.75em;
+    font-size: 13px;
+}
+article span{
+    font-family: Arial Unicode MS, sans-serif;
+    color: darkblue;
+    text-decoration: none;
+    font-size: 11px;
+}
+#part1{
+    width: 444px;
+    padding-left: 3em;
+    margin-top: 1em;
+    margin-bottom: 3em;
+}
+p1{
+    margin-top: 2em;
+}
+.cad{
+    margin-left: 2em;
+    font-size: 25px;
+    color: #848484;
+    font-weight: bold;
+    font-family: Arial Unicode MS, sans-serif;
+}
+#cpo{
+    color: #6E6E6E;
+    font-family: Arial Unicode MS, sans-serif;
+    font-size: 15px;
+}
+.ast{
+    color: red;
+    margin-left: 2em;
+}
+.lab{
+    color: red;
+    font-size: 13px;
+}
+#tipo{
+    margin-bottom: 1em;
+}
+table{
+    border-collapse: collapse;
+    white-space: nowrap;
+    margin-top: 1em;
+}
+th, td{
+    border: 1px solid silver;    
+}
+thead th{
+    background: darkgray;
+    color: black;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+tbody td{
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+th:first-child{
+    padding: 0.5em 8.295em 0.2em 8.295em;
+}
+th:nth-child(2){
+    padding: 0.5em 3em 0.2em 3em;
+}
+th:nth-child(3){
+    padding: 0.5em 8.295em 0.2em 8.295em;
+}
+th:nth-child(4){
+    padding: 0.5em 5em;
+}
+td:first-child{
+    padding: 0.5em 0em 0.5em 1em;
+}
+td:nth-child(2), td:nth-child(3), td:nth-child(4) {
+    text-align: center;
+}
+td:nth-child(4) a{
+    text-decoration: none;
+}
+td:nth-child(4) a:hover{
+    color: red;
+    
+}

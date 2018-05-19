@@ -1,0 +1,18 @@
+header, section, aside, nav, article, footer{
+    display: block;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    width: 950px;
+    margin: 0 auto;
+}
+#sec2{
+   float: right;
+    width: 749px;    
+}
+#dtEmp{
+    margin: 1em 0 0 0.75em;;
+}

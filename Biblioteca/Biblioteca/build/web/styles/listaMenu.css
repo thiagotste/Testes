@@ -1,0 +1,82 @@
+#login{
+    font-family: Arial Unicode MS, sans-serif;
+    color: darkgrey;
+}
+#login span{
+    font-family: Arial Unicode MS, sans-serif;
+    color: darkblue;
+}
+#login a, #tenho a, .er_ms, .e_message{
+    font-family: Arial Unicode MS, sans-serif;
+    color: darkblue;
+    text-decoration: none;
+    font-size: 11px;
+}
+#login a:hover, #tenho a:hover{
+    font-family: Arial Unicode MS, sans-serif;
+    color: red;
+    text-decoration: underline;
+    font-size: 11px;
+}
+header{
+    padding-bottom: 1em;    
+}
+header img{
+    float: left;
+    margin: 0 15px;
+}
+header h1{
+    padding-top: 1em;
+    font-family: aharoni, serif;
+    font-size: 1.75em;
+    text-transform: uppercase;
+}
+header h2{
+    font-family: "calibri light", serif;
+    color: grey;
+    font-size: 1.75em;
+}
+nav{
+    clear: both;
+    margin-top: 1em;
+}
+#menu{
+    list-style: none;
+    padding: 0.75em 0em;
+    background: beige;
+}
+#menu li{
+    display: inline;
+    position: relative;
+}
+#menu li a{
+    text-decoration: none;
+    padding: 0.6em 1em;
+    font-size: 20px;
+    font-family: calibri, serif;
+    color: black;
+}
+#menu li a:hover, #menu li a:focus{
+    background: blue;
+    color: white;
+}
+#menu li:hover ul{
+    position: absolute;
+    display: list-item;
+    top: 32px;
+}
+#menu li ul{
+    display: none;
+    list-style: none;
+    background-color: beige;
+    box-shadow: 4px 7px 10px 3px aliceblue;
+}
+#menu li ul li a{
+    padding: 0;
+    font-size: 18px;
+}
+#menu li ul li a:hover{
+    color: blue;
+    background: none;
+}
+

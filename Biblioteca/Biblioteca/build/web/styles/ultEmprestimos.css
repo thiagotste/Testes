@@ -1,0 +1,49 @@
+header, section, aside, nav, article, footer{
+    display: block;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    width: 950px;
+    margin: 0 auto;
+}
+#sec2{
+    float: right;
+    width: 749px;    
+}
+table{
+    border-collapse: collapse;
+    white-space: nowrap;
+    margin-top: 1em;
+}
+th, td{
+    border: 1px solid silver;    
+}
+thead th{
+    background: darkgray;
+    color: black;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+tbody td{
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+th:first-child{
+    padding: 0.5em 8.295em 0.2em 8.295em;
+}
+th:nth-child(2){
+    padding: 0.5em 3em 0.2em 3em;
+}
+th:nth-child(3){
+    padding: 0.5em 8.295em 0.2em 8.295em;
+}
+td:first-child{
+    padding: 0.5em 0em 0.5em 1em;
+}
+td:nth-child(2), td:nth-child(3){
+    text-align: center;
+}

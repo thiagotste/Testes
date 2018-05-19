@@ -1,0 +1,73 @@
+header, section, aside, nav, article, footer{
+    display: block;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    width: 950px;
+    margin: 0 auto;
+}
+#sec2{
+    float: right;
+    width: 749px;
+}
+#sec2 p{
+    margin: 0.5em 0;
+}
+.navsec{
+    margin: 0;
+}
+.navsec a{
+    text-decoration: none;
+    color: blue;
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+}
+.asec1, .asec2{
+    margin-right: 6em !important;
+}
+.asec3{
+    margin-right: 5.5em;
+}
+.asec4{
+    margin-right: 9.8em;
+}
+.asec5{
+    margin-right: 10.7em;
+}
+.asec6{
+    margin-right: 5.7em;
+}
+.asec7{
+    margin-right: 9em;
+}
+.asec8{
+    margin-right: 6.5em;
+}
+.asec9, .asec10{
+    margin-right: 9.5em;
+}
+.asec11{
+    margin-right: 8.1em;
+}
+
+.spsec1{
+    color: gray;
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+.spsec2{
+    color: gray;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+}
+hr{
+    border-style: dashed;
+    border-color: blue;
+}
+.sep{
+    border: 1px solid gainsboro;
+}

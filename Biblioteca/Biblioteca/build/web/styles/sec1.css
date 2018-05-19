@@ -1,0 +1,22 @@
+#sec1{
+    margin-bottom: 1em;
+}
+#sec1 h1{
+    color: gray;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+#sec1 p{
+    color: gray;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+}
+#sec1 p a{
+    color: blue;
+    text-decoration: none;
+}
+#sec1 p a:hover{
+    color: blue;
+    text-decoration: underline;
+}

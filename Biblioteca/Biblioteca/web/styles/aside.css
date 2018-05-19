@@ -1,0 +1,43 @@
+aside{
+    float: left;
+    width: 180px;
+}
+aside h1, #sec2 h1{
+    color: gray;
+    font-size: 17px;
+    font-family: Arial, sans-serif;
+}
+.anav{
+    margin: 0.3em 0;
+}
+.anav h3{
+    margin-bottom: .1em;
+}
+.anav h3 a{
+    color: blue;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+}
+.anav h3 a:hover{
+    color: blue;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+    text-decoration: underline;
+}
+.anav a{
+    text-decoration: none;
+    color: gray;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+}
+.anav a:hover{
+    text-decoration: underline;
+    color: blue;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+}
+hr{
+    border-style: dashed;
+    border-color: blue;
+}
+

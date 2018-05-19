@@ -1,0 +1,28 @@
+header, section, aside, nav, article, footer{
+    display: block;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    width: 950px;
+    margin: 0 auto;
+    border: 1px solid black;
+}
+aside{
+    border-top: 1px solid black;
+    float: left;
+    width: 300px;
+    border-right: 1px solid black;
+
+}
+section{
+    border-top: 1px solid black;
+    clear: left;
+    float: right;
+    width: 649px;    
+}
+.a1{
+    padding: 0.25em 4em 0.25em 0.85em;
+}

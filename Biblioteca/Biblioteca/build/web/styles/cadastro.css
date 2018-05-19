@@ -1,0 +1,49 @@
+header, section, aside, footer, article, nav{
+    display: block;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    margin: 0 auto;
+    width: 950px;
+}
+section{
+    width: 948px;
+}
+/*
+#nao_tenho{
+    float: right;
+    width: 450px;
+    padding-right: 0em;
+}
+*/
+#tenho{    
+    //border-right: 1px solid gainsboro;
+    width: 330px;
+    margin-left: 13em;
+    padding-left: 5em;
+}
+#tenho h1/*, #nao_tenho h1*/{
+    color: blue;
+    font-size: 25px;
+    font-family: Arial Unicode MS, sans-serif;
+    padding-bottom: 0.2em;
+}
+#tenho label/*, #nao_tenho label*/{
+    color: gray;
+    font-size: 17px;
+    font-family: Arial, sans-serif;
+}
+#tenho input/*, #nao_tenho input*/{
+    margin-bottom: 1em;
+    padding: 0.2em 0.8em 0.2em 0;
+    font-size: 15px;
+}
+#senha_cpf/*, #email*/{
+    margin: 0 !important;
+}
+.prosseguir{
+    margin-top: 1em;
+}

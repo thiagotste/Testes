@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/BibliotecaAngulajs">
+    <Resource auth="Container"
+              driverClassName="org.postgresql.Driver" 
+              logAbandoned="true" 
+              maxTotal="20" 
+              maxIdle="10"              
+              name="jdbc/db_biblioteca" 
+              username="postgres"
+              password="thiago"            
+              removeAbandonedOnBorrow="true" 
+              removeAbandonedTimeout="60"
+              type="javax.sql.DataSource" 
+              url="jdbc:postgresql://localhost:5432/db_biblioteca?autoReconnect=true"/>
+</Context>

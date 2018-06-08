@@ -1,0 +1,53 @@
+<footer>
+    <div class="container">
+        <div class="row marginUl">
+            <div class="col-md-2">
+                <ul>
+                    <li>teste1</li>
+                    <li>teste1</li>
+                    <li>teste1</li>
+                    <li>teste1</li>
+                </ul>
+            </div>
+            <div class="col-md-2">
+                <ul>
+                    <li>teste2</li>
+                    <li>teste2</li>
+                    <li>teste2</li>
+                    <li>teste2</li>
+                </ul>
+            </div>
+            <div class="col-md-2">
+                <ul>
+                    <li>teste3</li>
+                    <li>teste3</li>
+                    <li>teste3</li>
+                    <li>teste3</li>
+                </ul>
+            </div>
+            <div class="col-md-2">
+                <ul>
+                    <li>teste4</li>
+                    <li>teste4</li>
+                    <li>teste4</li>
+                    <li>teste4</li>
+                </ul>
+            </div>
+            <div class="col-md-2">
+                <ul>
+                    <li>teste5</li>
+                    <li>teste5</li>
+                    <li>teste5</li>
+                    <li>teste5</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p id="org">Prefeitura de Santos - OTC - Ouvidoria, Transparência e Controle - DETIC - 
+                    Depto de Gestão da Tec. de Informação e Comunicações - SECOM - Secretaria de Comunicação</p>
+            </div>
+        </div>
+    </div>
+    <%@include file="login.jspf" %>
+</footer>

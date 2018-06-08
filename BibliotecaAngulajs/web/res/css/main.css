@@ -1,0 +1,27 @@
+header{
+    clear: both;
+    padding-bottom: 5em;
+}
+footer{
+    clear: both;
+    background-color: #00302D;
+    padding-bottom: 2em;
+    padding-top: 3em;
+}
+#org{
+    clear: both;
+    text-align: center;
+    color: white;    
+}
+footer ul{
+    list-style-type: none;
+}
+footer ul li{
+    color: white;
+}
+@media(min-width: 768px){
+    .marginUl{
+        padding-left: 8em;
+        padding-bottom: 3em;
+    }
+}

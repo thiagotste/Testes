@@ -1,7 +1,7 @@
 package com.br.library.utils;
 import java.io.Serializable;
 public class User implements Serializable{
-    private int id;
+    private long id;
     private String name;
     private String email;
     private String pass;
@@ -46,11 +46,11 @@ public class User implements Serializable{
         this.superUser = superUser;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

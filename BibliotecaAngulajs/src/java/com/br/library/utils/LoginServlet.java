@@ -7,9 +7,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.br.library.sql.sqlComamnds;
-import java.sql.*;
+import com.br.library.sql.SqlComamnds;
 import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
 
 public class LoginServlet extends HttpServlet {
 
@@ -19,22 +19,44 @@ public class LoginServlet extends HttpServlet {
         EfetuaMd5 md5 = new EfetuaMd5();
         String email = request.getParameter("email");
         String password = md5.hashMD5(request.getParameter("password") + "&bis");
-        System.out.println(email);
-        System.out.println(password);
-        sqlComamnds s = new sqlComamnds();
+        SqlComamnds sql = new SqlComamnds();
+        ArrayList<Object[]> rows;
+        Object[] row;
+        HttpSession session = request.getSession();
+        PrintWriter out = response.getWriter();
         try {
-//            int i;
-//            String query = "insert into access.user(name, email, pass, rg, cpf, phone, address, is_super_user) values(?,?,?,?,?,?,?,?)";
-//            i = s.executeUpdate(query, new Object[]{"admin", "admin@admin", md5.hashMD5("123456" + "&bis"), "","","","", Boolean.parseBoolean("true")});
-//            System.out.println(i);
-            String query = "Select * from access.user";
-            ArrayList<Object[]> rows = s.executeQuery(query, null, "Login");
-                       System.out.println(rows);
+            String query = "SELECT id, name, email, is_enabled, rg, cpf, phone, address, is_super_user, (SELECT CASE WHEN count(*) = 0 THEN false WHEN count(*) = 1 THEN true END FROM access.librarian WHERE user_id = au.id) FROM access.user au WHERE email = ? AND pass = ?";
+            rows = sql.executeQuery(query, new Object[]{email, password}, "Login Servlet");
+            if (rows == null) {
+                out.print("{\"code\":0}");
+            } else if (rows.isEmpty()) {
+                out.print("{\"code\":1}");
+            } else {
+                row = rows.get(0);
+                if ((boolean) row[3]) {
+                    User user = new User();
+                    user.setId((long) row[0]);
+                    user.setName((String) row[1]);
+                    user.setEmail((String) row[2]);
+                    user.setEnabled((boolean) row[3]);
+                    user.setRg((String) row[4]);
+                    user.setCpf((String) row[5]);
+                    user.setPhone((String) row[6]);
+                    user.setAddress((String) row[7]);
+                    user.setSuperUser((boolean) row[8]);
+                    session.setAttribute("user", user);
+
+                    if ((boolean) row[9]) {
+                        session.setAttribute("isLibrarian", true);
+                    }
+                    out.print("{\"code\":2}");
+                } else {
+                    out.print("{\"code\":3}");
+                }
+            }
         } catch (Exception e) {
             System.out.println(e);
-        }
-        try (PrintWriter out = response.getWriter()) {
-            out.print("{\"code\":1}");
+            out.print("{\"code\":4}");
         }
     }
 

@@ -12,10 +12,11 @@
                 data: {'email': email, 'password': password},
                 dataType: 'json',
                 method: 'POST'
-            }).done(function (response) {                
-                console.log(response.code);
+            }).done(function (response) {
+                location.reload();
+                
             }).fail(function (data) {
-
+                alert(data);
             });
         });
     });

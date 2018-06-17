@@ -1,4 +1,4 @@
-package com.br.library.utils;
+package com.br.library.accsess;
 
 import com.br.inova.classes.utils.EfetuaMd5;
 import java.io.IOException;

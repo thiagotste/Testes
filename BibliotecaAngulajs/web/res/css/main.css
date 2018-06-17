@@ -1,7 +1,64 @@
+/*Header*/
+@media(min-width: 768px){
+    .marginUl{
+        padding-left: 8em;
+        padding-bottom: 3em;
+    }
+}
+@media(min-width: 575px){
+    #loginModalLabel{
+        padding-left: 3em;
+    }
+}
 header{
     clear: both;
     padding-bottom: 5em;
 }
+/*Login*/
+.input-login{
+    outline: none;
+    border-radius: 0px;    
+    box-shadow: none;
+    border-color: gray;
+    border-width: 2px;
+    border-style: none none solid none;    
+}
+.input-login-error{
+    outline: none;
+    border-radius: 0px;    
+    box-shadow: none;
+    border-color: red;
+    border-width: 2px;
+    border-style: none none solid none;    
+}
+.input-login:focus{
+    box-shadow: none;
+    border-color: blue;
+    border-style: none none solid none;        
+}
+.buttonLogin{
+    display: block;    
+    width: 20em;
+    clear: both;
+}
+.loginLoader {
+    margin-left: 12em;
+    margin-top: 5em;
+    margin-bottom: 9em;
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/*Footer*/
 footer{
     clear: both;
     background-color: #00302D;
@@ -18,10 +75,4 @@ footer ul{
 }
 footer ul li{
     color: white;
-}
-@media(min-width: 768px){
-    .marginUl{
-        padding-left: 8em;
-        padding-bottom: 3em;
-    }
 }

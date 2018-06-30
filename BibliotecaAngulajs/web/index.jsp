@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="icon" type="image/png" sizes="96x96" href="<%= request.getContextPath()%>/res/imagens/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="<%= request.getContextPath()%>/res/imagens/icons/favicon-96x96.png">
         <link rel="stylesheet" href="<%= request.getContextPath()%>/res/css/bootstrap.css">
         <link rel="stylesheet" href="<%= request.getContextPath() %>/res/css/main.css">
         <title>Biblioteca</title>

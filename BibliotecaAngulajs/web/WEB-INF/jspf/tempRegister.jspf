@@ -1,0 +1,91 @@
+<script>
+    $(function () {
+        $('#tempRegister').on('shown.bs.modal', function () {
+            $('#tempRegisterEmail').trigger('focus');
+        });
+        $("#tempRegisterForm").submit(function (e) {
+            e.preventDefault();
+            var email = $("#tempRegisterEmail").val().trim();
+            var password = $("#tempRegisterPassword").val().trim();
+            var passConf = $("#tempRegisterConPassword").val().trim();
+            if (password.length < 6) {
+                $("#tempRegisterPassword").addClass("input-temp");
+                $("#passwordHelpBlock").css("display", "none");
+                $("#passwordHelpBlockError").css("display", "block");
+                $("#tempRegisterConPassword").removeClass("input-temp");
+                $("#confPasswordHelpBlock").css("display", "none");
+            } else if (password.length >= 6) {
+                $("#tempRegisterPassword").removeClass("input-temp");
+                $("#passwordHelpBlock").css("display", "block");
+                $("#passwordHelpBlockError").css("display", "none");
+                if (password !== passConf) {
+                    $("#tempRegisterConPassword").addClass("input-temp");
+                    $("#confPasswordHelpBlock").css("display", "block");
+                } else {
+                    $("#tempRegisterLoading").css("display", "block");
+                    $("#tempRegisterFooterButton").css("display", "none");
+                    $.ajax({
+                        url: '<%= request.getContextPath()%>/data/user.jsp',
+                        data: {'email': email, 'password': password, 'action': 'tempRegister'},
+                        dataType: 'json',
+                        method: 'POST'
+                    }).done(function (response) {
+                        $("#tempRegisterLoading").css("display", "none");
+                        $("#tempRegisterFooterButton").css("display", "block");
+                        console.log(response);
+                    }).fail(function (data) {
+                        $("#tempRegisterLoading").css("display", "none");
+                        $("#tempRegisterFooterButton").css("display", "block");
+                        console.log(data);
+                        alert(data);
+                    });
+                }
+            }
+        });
+    });
+</script>
+<!-- Modal Cadastro Temporário -->
+<div class="modal fade" id="tempRegister" tabindex="-1" role="dialog" aria-labelledby="tempRegisterModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="border: none;">
+                <h5 class="modal-title" id="tempRegisterModal">Pré-cadastro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="tempRegisterForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="tempRegisterEmail">Email:</label>
+                        <input type="email" id="tempRegisterEmail" name="email" class="form-control" placeholder="Digite o email." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tempRegisterPassword">Senha:</label>
+                        <input type="password" id="tempRegisterPassword" name="password" class="form-control" placeholder="Digite a senha." required>
+                        <small id="passwordHelpBlock" class="form-text text-muted">
+                            Sua senha deve ter no mínimo 6 caracteres.
+                        </small>
+                        <small id="passwordHelpBlockError" class="form-text text-muted" style="display: none;">
+                            <span style="color: red;">Sua senha deve ter no mínimo 6 caracteres.</span>
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="tempRegisterConPassword">Confirme a Senha:</label>
+                        <input type="password" id="tempRegisterConPassword" name="passwordCon" class="form-control" placeholder="Confirme a senha." required>
+                        <small id="confPasswordHelpBlock" class="form-text text-muted" style="display: none;">
+                            <span style="color: red;">O valor do campo deve ser igual ao campo senha.</span>
+                        </small>                        
+                    </div>
+                </div>
+                <div id="tempRegisterLoading" style="display: none;"><img style="width:25%;margin-left: 38%" src="<%= request.getContextPath()%>/res/images/icons/15.gif" alt=""/></div>
+                <div id="tempRegisterFooterButton" class="modal-footer">                    
+                    <button type="submit" id="tempRegisterButton" class="btn btn-primary mx-auto">Cadastrar</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#errorModal">
+                        Launch demo modal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

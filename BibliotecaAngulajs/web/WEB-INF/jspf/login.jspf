@@ -1,7 +1,7 @@
 <script>
     $(function () {
         $('#login').on('shown.bs.modal', function () {
-            $('#emailLoad').trigger('focus');
+            $('#loginEmail').trigger('focus');
         });
         $(".loginLoader").css("display", "none");
         $("#loginForm").submit(function (e) {
@@ -54,12 +54,15 @@
                 $("#loginBody").css("display", "block");
             });
         });
-        $('#login').on('hidden.bs.modal', function (e) {
+        $('#login').on('hidden.bs.modal', function () {
             $("#loginEmail, #loginPassword").removeClass("input-login-error");
             $("#loginEmail, #loginPassword").addClass("input-login");
             $("#loginEmail").val("");
             $("#loginPassword").val("");
             $("#loginAlert").css("display", "none");
+        });
+        $("#registerLoginButton").click(function () {
+            $("#login").modal("hide");
         });
     });
 </script>
@@ -85,7 +88,7 @@
                     </div>
                     <button type="button" class="btn btn-link mb-3 float-right">Esqueceu a senha?</button>
                     <button type="submit" class="btn btn-outline-dark btn-sm mb-3 mx-auto buttonLogin">Entrar</button>
-                    <button type="button" class="btn btn-link btn-sm mx-auto buttonLogin">Cadastrar-se</button>
+                    <button type="button" id="registerLoginButton" class="btn btn-link btn-sm mx-auto buttonLogin" data-toggle="modal" data-target="#tempRegister">Cadastrar-se</button>
                 </form>
                 <div id="loginAlert" style="display: none;" class="alert alert-danger text-center" role="alert">
                     <span id="spanAlert"></span>                    

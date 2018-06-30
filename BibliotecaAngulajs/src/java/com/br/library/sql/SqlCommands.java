@@ -5,7 +5,7 @@ import com.br.library.conection.ConnectionPool;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class SqlComamnds implements SqlMethodInterface {
+public class SqlCommands implements SqlMethodInterface {
 
     @Override
     public ArrayList<Object[]> executeQuery(String query, Object[] parameters, String id) {

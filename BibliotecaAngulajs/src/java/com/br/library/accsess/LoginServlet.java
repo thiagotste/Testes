@@ -1,13 +1,13 @@
 package com.br.library.accsess;
 
-import com.br.inova.classes.utils.EfetuaMd5;
+import com.br.library.utils.EfetuaMd5;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.br.library.sql.SqlComamnds;
+import com.br.library.sql.SqlCommands;
 import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 
@@ -19,13 +19,13 @@ public class LoginServlet extends HttpServlet {
         EfetuaMd5 md5 = new EfetuaMd5();
         String email = request.getParameter("email");
         String password = md5.hashMD5(request.getParameter("password") + "&bis");
-        SqlComamnds sql = new SqlComamnds();
+        SqlCommands sql = new SqlCommands();
         ArrayList<Object[]> rows;
         Object[] row;
         HttpSession session = request.getSession();
         PrintWriter out = response.getWriter();
         try {
-            String query = "SELECT id, name, email, is_enabled, rg, cpf, phone, address, is_super_user, (SELECT CASE WHEN count(*) = 0 THEN false WHEN count(*) = 1 THEN true END FROM access.librarian WHERE user_id = au.id) FROM access.user au WHERE email = ? AND pass = ?";
+            String query = "SELECT id, name, email, is_enabled, rg, cpf, phone, address, is_super_user, (SELECT CASE WHEN count(*) = 0 THEN false WHEN count(*) = 1 THEN true END FROM library.librarian WHERE user_id = au.id) FROM access.user au WHERE email = ? AND pass = ?";
             rows = sql.executeQuery(query, new Object[]{email, password}, "Login Servlet");
             if (rows == null) {
                 out.print("{\"code\":0}");

@@ -36,6 +36,14 @@ header{
     border-color: blue;
     border-style: none none solid none;        
 }
+.input-temp{
+    border: 1px solid red;
+    box-shadow: none;
+}
+.input-temp:focus{
+    box-shadow: none;
+    border: 1px solid red;
+}
 .buttonLogin{
     display: block;    
     width: 20em;

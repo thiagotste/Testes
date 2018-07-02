@@ -53,4 +53,5 @@
     <%@include file="tempRegister.jspf" %>
     <%@include file="successModal.jspf" %>
     <%@include file="errorModal.jspf" %>
+    <%@include file="unsuccessfulModal.jspf" %>
 </footer>

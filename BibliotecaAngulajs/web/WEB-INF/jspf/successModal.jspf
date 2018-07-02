@@ -1,12 +1,12 @@
 <!-- Modal de sucesso -->
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header mx-2 mt-1 " style="background-color: green; height: 10em;">
             </div>
             <div class="modal-body">
                 <div class="border border-success">
-                    <p id="successText" class="text-center my-5">Operação realizada com sucesso.</p>
+                    <p id="successText" class="text-center my-5"></p>
                 </div>
             </div>
             <div class="modal-footer border-top border-success mx-2">

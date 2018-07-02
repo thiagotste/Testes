@@ -31,11 +31,32 @@
                         method: 'POST'
                     }).done(function (response) {
                         $("#tempRegisterLoading").css("display", "none");
-                        $("#tempRegisterFooterButton").css("display", "block");
+                        $("#tempRegisterFooterButton").css("display", "flex");
                         console.log(response);
+                        if(response.re === 0){
+                            $("#errorText").text("Falha do servidor. Erro x000. Tente de novo mais tarde.");
+                            $("#errorModal").modal("show");
+                        }else if(response.re === 1){
+                            $("#errorText").text("Falha do servidor. Erro x001. Tente de novo mais tarde.");
+                            $("#errorModal").modal("show");
+                        }else if(response.re === 2){
+                            $("#errorText").text("Falha do servidor. Erro x002. Tente de novo mais tarde.");
+                            $("#errorModal").modal("show");
+                        }else if(response.re === 3){
+                            $("#unsuccessfulText").text("Usuário já está cadastrado.");
+                            $("#unsuccessfulModal").modal("show");
+                        }else if(response.re === 4){
+                            $("#unsuccessfulText").text("Usuário já está pré-cadastrado. Para terminar o cadastro, use o link: ");
+                            $("#unsuccessfulText").append("<a href=\"<%= request.getContextPath()%>/restrict/user/userRegister.jsp?email="+email+"\">Cadastro</a>");
+                            $("#unsuccessfulModal").modal("show");
+                        }else{
+                            $("#successText").text("Para terminar o cadastro, use o link: ");
+                            $("#successText").append("<a href=\"<%= request.getContextPath()%>/restrict/user/userRegister.jsp?email="+email+"\">Cadastro</a>");
+                            $("#successModal").modal("show");
+                        }
                     }).fail(function (data) {
                         $("#tempRegisterLoading").css("display", "none");
-                        $("#tempRegisterFooterButton").css("display", "block");
+                        $("#tempRegisterFooterButton").css("display", "flex");
                         console.log(data);
                         alert(data);
                     });
@@ -78,12 +99,9 @@
                         </small>                        
                     </div>
                 </div>
-                <div id="tempRegisterLoading" style="display: none;"><img style="width:25%;margin-left: 38%" src="<%= request.getContextPath()%>/res/images/icons/15.gif" alt=""/></div>
+                <div id="tempRegisterLoading" style="display: none;"><img style="width:25%;margin-left: 38%; margin-bottom: 5%;" src="<%= request.getContextPath()%>/res/imagens/icons/15.gif" alt=""/></div>
                 <div id="tempRegisterFooterButton" class="modal-footer">                    
-                    <button type="submit" id="tempRegisterButton" class="btn btn-primary mx-auto">Cadastrar</button>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#errorModal">
-                        Launch demo modal
-                    </button>
+                    <button type="submit" id="tempRegisterButton" class="btn btn-primary mx-auto">Cadastrar</button>                    
                 </div>
             </form>
         </div>

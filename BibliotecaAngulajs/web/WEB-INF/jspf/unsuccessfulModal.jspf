@@ -1,0 +1,17 @@
+<!-- Modal de sem sucesso -->
+<div class="modal fade" id="unsuccessfulModal" tabindex="-1" role="dialog" aria-labelledby="unsuccessfulModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header mx-2 mt-1 " style="background-color: gray; height: 10em;">
+            </div>
+            <div class="modal-body">
+                <div class="border border-danger">
+                    <p id="unsuccessfulText" class="text-center my-5"></p>
+                </div>
+            </div>
+            <div class="modal-footer border-top border-secondary mx-2">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>        
+            </div>
+        </div>
+    </div>
+</div>

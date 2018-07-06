@@ -1,10 +1,22 @@
 var userAngular = angular.module("userAngular", []);
-userAngular.controller("userRegisterController", ["$scope", "$http", function ($scope, $http) {
-        $scope.register = {};
-        $scope.registerUser = function (register) {            
-            console.log(register);
+userAngular.factory('context', ['$window',function ($w) {
+        return {
+            ctx: $w.ctx
         };
-        $scope.nchange = function() {
+}]);
+userAngular.controller("userRegisterController", ["$scope", "$http", "postService", "context", function ($scope, $http, postService, context) {
+        $scope.register = {};
+        $scope.register.email = window.email;
+        $scope.registerUser = function (register) {
+            console.log(register);
+            register.action = "userRegister";
+            var url = context.ctx + "/data/user.jsp";
+            postService.query(register, url).then(function (response) {
+                console.log(response.data);
+            });
+            
+        };
+        $scope.nchange = function () {
             $scope.register.address = $("#registerAddress").val();
             $scope.register.neighbor = $("#registerNeighborhood").val();
             $scope.register.city = $("#registerCity").val();
@@ -58,4 +70,103 @@ userAngular.controller("userRegisterController", ["$scope", "$http", function ($
                 }
             }
         };
+    }]);
+userAngular.factory('postService', ['$http', function ($http) {
+        return {
+            query: function (selecionado, url) {
+                var serializedData = $.param(selecionado);
+                return  $http({
+                    method: 'POST',
+                    url: url,
+                    data: serializedData,
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }});
+            }
+        };
+    }]);
+
+
+userAngular.factory('getService', ['$http', function ($http) {
+        return {
+            query: function (url) {
+                return $http.get(url);
+            }
+        };
+    }]);
+userAngular.factory("getInterception", ['$q', '$log', function ($q, $log) {
+        var xhr = 0;
+        function isLoading() {
+            return xhr > 0;
+        }
+        function updateStatus() {
+            loadingGet = isLoading();
+        }
+
+        return {
+            request: function (config) {
+                xhr++;
+                if (config.method === "GET") {
+                    updateStatus();
+                }
+                return config;
+            },
+            requestError: function (rejection) {
+                xhr--;
+                updateStatus();
+                $log.error('Request Error: ', rejection);
+                return $q.reject(rejection);
+            },
+            response: function (response) {
+                xhr--;
+                updateStatus();
+                return response;
+            },
+            responseError: function (rejection) {
+                xhr--;
+                updateStatus();
+                $log.error('Response Error: ', rejection);
+                return $q.reject(rejection);
+            }
+        };
+    }]);
+userAngular.factory("postInterception", ['$q', '$rootScope', '$log', function ($q, $rootScope, $log) {
+        var xhr = 0;
+        function isLoading() {
+            return xhr > 0;
+        }
+        function updateStatus() {
+            loadingPost = isLoading();
+        }
+
+        return {
+            request: function (config) {
+                xhr++;
+                if (config.method === "POST") {
+                    updateStatus();
+                }
+                return config;
+            },
+            requestError: function (rejection) {
+                xhr--;
+                updateStatus();
+                $log.error('Request Error: ', rejection);
+                return $q.reject(rejection);
+            },
+            response: function (response) {
+                xhr--;
+                updateStatus();
+                return response;
+            },
+            responseError: function (rejection) {
+                xhr--;
+                updateStatus();
+                $log.error('Response Error: ', rejection);
+                return $q.reject(rejection);
+            }
+        };
+    }]);
+userAngular.config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.interceptors.push("getInterception");
+        $httpProvider.interceptors.push("postInterception");
     }]);

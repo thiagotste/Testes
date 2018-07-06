@@ -2,7 +2,7 @@
 <header>
     <nav class="navbar fixed-top navbar-expand-md navbar-light bg-info">
         <div class="container">
-            <a class="navbar-brand" href="<%= request.getContextPath()%>/index.jsp"><img src="<%= request.getContextPath()%>/res/imagens/biblioteca_2.jpg" alt="Home" height="50" width="50"/></a>
+            <a class="navbar-brand" href="<%= request.getContextPath()%>/index.jsp"><img src="<%= request.getContextPath()%>/res/images/biblioteca_2.jpg" alt="Home" height="50" width="50"/></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

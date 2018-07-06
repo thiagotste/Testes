@@ -1,3 +1,10 @@
+<%@page import="java.util.Locale"%>
+<%@page import="com.br.library.utils.DateUtils"%>
+<%@page import="java.sql.Timestamp"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.text.DateFormat"%>
+<%@page import="java.util.List"%>
+<%@page import="com.br.library.sql.SqlMethodInterface"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.br.library.sql.SqlCommands" %>
 <%@page import="com.br.library.utils.EfetuaMd5" %>
@@ -5,6 +12,7 @@
 
 <%
     String action = request.getParameter("action");
+    String method = request.getMethod();
     if (action == null) {
         action = "";
     }
@@ -59,6 +67,32 @@
 <%
     }
 %>
+<%
+    }
+%>
+<%
+    if (action.equals("userRegister")) {
+        String email = request.getParameter("email");
+        String password = md5.hashMD5(request.getParameter("pass") + "bis");
+
+        List<Object[]> rows = null;
+        SqlMethodInterface sql = new SqlCommands();
+        String query = "";
+        try {
+            query = "SELECT id FROM access.user_temp WHERE email = ? AND pass = ?";
+            rows = sql.executeQuery(query, new Object[]{email, password}, "Select user register");
+            if (!rows.isEmpty()) {
+                String birth = request.getParameter("birth");
+                
+                
+                System.out.println(DateUtils.convertToTimestamp(birth));
+
+            }
+        } catch (Exception e) {
+            System.out.println("User register: " + e.getMessage());
+        }
+%>
+
 <%
     }
 %>

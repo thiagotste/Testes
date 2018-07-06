@@ -1,10 +1,34 @@
+<%@page import="java.util.List"%>
+<%@page import="com.br.library.sql.SqlCommands"%>
+<%@page import="com.br.library.sql.SqlMethodInterface"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    SqlMethodInterface sql = new SqlCommands();
+    String email = request.getParameter("email");
+    String query = "";
+    List<Object[]> rows = null;
+    try {
+        query = "SELECT id FROM access.user_temp WHERE email = ?";
+        rows = sql.executeQuery(query, new Object[]{email}, "Select temp user register");
+        if(!rows.isEmpty()){
+            query = "SELECT id FROM access.user WHERE email = ?";
+            rows = sql.executeQuery(query, new Object[]{email}, "Select user register");
+            if(!rows.isEmpty()){
+                response.sendError(403, "Email já cadastrado.");
+            }
+        }else{
+            response.sendError(403, "Precisa fazer o pré-cadastro.");
+        }
+    } catch (Exception e) {
+        response.sendError(500);
+    }
+%>
 <!DOCTYPE html>
 <html ng-app="userAngular">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="icon" type="image/png" sizes="96x96" href="<%= request.getContextPath()%>/res/imagens/icons/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="<%= request.getContextPath()%>/res/images/icons/favicon-96x96.png">
         <link rel="stylesheet" href="<%= request.getContextPath()%>/res/css/bootstrap.css">
         <link rel="stylesheet" href="<%= request.getContextPath()%>/res/css/main.css">
         <script src="<%= request.getContextPath()%>/res/javascript/jquery-3.3.1.js"></script>
@@ -15,6 +39,10 @@
         <script src="<%= request.getContextPath()%>/res/javascript/utilities.js"></script>
         <title>Cadastrar Usuário</title>
     </head>
+    <script>
+        var email = "${param.email}";
+        var ctx = "<%= request.getContextPath() %>";
+    </script>
     <body ng-controller="userRegisterController">
         <%@include file="../../WEB-INF/jspf/mainHeader.jspf"%>        
         <main class="container my-5">
@@ -83,7 +111,7 @@
                 <div class="form-row">
                     <div class="form-group col-6">
                         <label for="registerEmail">Email:</label>
-                        <!--<input type="email" id="registerEmail" class="form-control" name="email" ng-model="register.email" placeholder="" readonly required>-->
+                        <input type="email" id="registerEmail" class="form-control" name="email" ng-model="register.email" placeholder="" readonly required>
                     </div>
                     <div class="form-group col-6">
                         <label for="registerPass">Senha:</label>

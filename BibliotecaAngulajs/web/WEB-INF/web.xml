@@ -11,10 +11,12 @@
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
+        <url-pattern>/restrict/user/Login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/Logout</url-pattern>
+        <url-pattern>/restrict/user/Logout</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

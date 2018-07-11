@@ -13,6 +13,7 @@ public class User implements Serializable{
     private String address;
     private String birthday;
     private boolean superUser;
+    private boolean librarian;
     
     public User(){
         this.id = 0;
@@ -27,11 +28,12 @@ public class User implements Serializable{
         this.address = "";
         this.birthday = "";
         this.superUser = false;
+        this.librarian = false;
     }
 
     public User(int id, String name, String email, String pass, boolean enabled, 
             String createDate, String rg, String cpf, String phone, String address, 
-            String birthday, boolean superUser) {
+            String birthday, boolean superUser, boolean librarian) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -44,6 +46,7 @@ public class User implements Serializable{
         this.address = address;
         this.birthday = birthday;
         this.superUser = superUser;
+        this.librarian = librarian;
     }
 
     public long getId() {
@@ -140,5 +143,13 @@ public class User implements Serializable{
 
     public void setSuperUser(boolean superUser) {
         this.superUser = superUser;
+    }
+    
+    public boolean isLibrarian() {
+        return librarian;
+    }
+
+    public void setLibrarian(boolean librarian) {
+        this.librarian = librarian;
     }
 }

@@ -1,25 +1,73 @@
 var userAngular = angular.module("userAngular", []);
-userAngular.factory('context', ['$window',function ($w) {
+userAngular.factory('context', ['$window', function ($w) {
         return {
             ctx: $w.ctx
         };
-}]);
-userAngular.controller("userRegisterController", ["$scope", "$http", "postService", "context", function ($scope, $http, postService, context) {
+    }]);
+userAngular.controller("userRegisterController", ["$scope", "$http", "postService","getService", "context", function ($scope, $http, postService, getService, context) {
         $scope.register = {};
         $scope.register.email = window.email;
-        $scope.registerUser = function (register) {
-            console.log(register);
+        $scope.registerUser = function (register) {            
             register.action = "userRegister";
             var url = context.ctx + "/data/user.jsp";
             postService.query(register, url).then(function (response) {
-                console.log(response.data);
+                if (response.data.re === 0) {
+                    $("#errorText").text("Falhao do servidor. Erro x000.");
+                    $("#errorModal").modal("show");
+                } else if (response.data.re === 1) {
+                    $("#unsuccessfulText").text("Senha incorreta.");
+                    $("#unsuccessfulModal").modal("show");
+                } else if (response.data.re === 2) {
+                    $("#errorText").text("Falhao do servidor. Erro x001.");
+                    $("#errorModal").modal("show");
+                } else {
+                    $("#successText").text("Usuário inserido com sucesso.");
+                    $("#successText").append("<p>Click <a href=\"" + context.ctx + "/index.jsp\">aqui</a> para voltar à página inicial.</p>");
+                    $("#successModal").modal("show");
+                }
+                $('#successModal').on('hidden.bs.modal', function () {
+                    location.href = context.ctx + "/index.jsp";
+                });
+
             });
-            
+
         };
-        $scope.nchange = function () {
-            $scope.register.address = $("#registerAddress").val();
-            $scope.register.neighbor = $("#registerNeighborhood").val();
-            $scope.register.city = $("#registerCity").val();
+//        $scope.nchange = function () {
+//            $scope.register.address = $("#registerAddress").val();
+//            $scope.register.neighbor = $("#registerNeighborhood").val();
+//            $scope.register.city = $("#registerCity").val();
+//        }
+        $scope.zblur = function (val) {            
+            function form_wiping() {
+                $scope.register.address = "";
+                $scope.register.neighbor = "";
+                $scope.register.city = "";
+                $scope.register.state = "";
+            }            
+            if (val) {
+                var cep = val.replace(/\D/g, '');
+                var validacep = /^[0-9]{8}$/;
+                if (validacep.test(cep)) {
+                    $scope.register.address = "...";
+                    $scope.register.neighbor = "...";
+                    $scope.register.city = "...";
+                    $scope.register.state = "...";
+                }
+                getService.query("//viacep.com.br/ws/" + cep + "/json/").then(function (response) {
+                    if (!("erro" in response)) {                        
+                        $scope.register.address = response.data.logradouro;
+                        $scope.register.neighbor = response.data.bairro;
+                        $scope.register.city = response.data.localidade;
+                        $scope.register.state = response.data.uf;
+
+                    } else {
+                        form_wiping();
+                    }
+                });
+            } else {
+                form_wiping();
+            }
+            /********************** FONTE: http://viacep.com.br/ *************************/
         }
         $scope.cpfTest = function (value) {
             if (value) {
@@ -85,8 +133,6 @@ userAngular.factory('postService', ['$http', function ($http) {
             }
         };
     }]);
-
-
 userAngular.factory('getService', ['$http', function ($http) {
         return {
             query: function (url) {
@@ -94,13 +140,13 @@ userAngular.factory('getService', ['$http', function ($http) {
             }
         };
     }]);
-userAngular.factory("getInterception", ['$q', '$log', function ($q, $log) {
+userAngular.factory("getInterception", ['$q', '$log', function ($q, $rootScope, $log) {
         var xhr = 0;
         function isLoading() {
             return xhr > 0;
         }
         function updateStatus() {
-            loadingGet = isLoading();
+            $rootScope.loadingGet = isLoading();
         }
 
         return {
@@ -136,7 +182,7 @@ userAngular.factory("postInterception", ['$q', '$rootScope', '$log', function ($
             return xhr > 0;
         }
         function updateStatus() {
-            loadingPost = isLoading();
+            $rootScope.loadingPost = isLoading();
         }
 
         return {

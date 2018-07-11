@@ -44,11 +44,9 @@ public class LoginServlet extends HttpServlet {
                     user.setPhone((String) row[6]);
                     user.setAddress((String) row[7]);
                     user.setSuperUser((boolean) row[8]);
+                    user.setLibrarian((boolean) row[9]);
                     session.setAttribute("user", user);
-
-                    if ((boolean) row[9]) {
-                        session.setAttribute("isLibrarian", true);
-                    }
+                   
                     out.print("{\"code\":2}");
                 } else {
                     out.print("{\"code\":3}");

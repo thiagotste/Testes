@@ -22,7 +22,7 @@
 <%
     if (action.equals("tempRegister")) {
         String email = request.getParameter("email");
-        String password = md5.hashMD5(request.getParameter("password") + "bis");
+        String password = md5.hashMD5(request.getParameter("password") + "&bis");
         int result = 0;
 
         SqlCommands sql = new SqlCommands();
@@ -71,28 +71,65 @@
     }
 %>
 <%
-    if (action.equals("userRegister")) {
+    if (action.equals("userRegister") && method.equalsIgnoreCase("post")) {
         String email = request.getParameter("email");
-        String password = md5.hashMD5(request.getParameter("pass") + "bis");
+        String password = md5.hashMD5(request.getParameter("pass") + "&bis");
 
         List<Object[]> rows = null;
         SqlMethodInterface sql = new SqlCommands();
         String query = "";
+        int result = 0, resultTemp = 0;
         try {
+            sql.executeUpdate("BEGIN;");
             query = "SELECT id FROM access.user_temp WHERE email = ? AND pass = ?";
             rows = sql.executeQuery(query, new Object[]{email, password}, "Select user register");
             if (!rows.isEmpty()) {
+                String name = request.getParameter("name");
                 String birth = request.getParameter("birth");
-                
-                
-                System.out.println(DateUtils.convertToTimestamp(birth));
-
+                String rg = request.getParameter("rg");
+                String cpf = request.getParameter("cpf");
+                String phone = request.getParameter("phone");
+                String zcode = request.getParameter("zcode");
+                String address = request.getParameter("address");
+                String complement = request.getParameter("complement");                
+                String neighbor = request.getParameter("neighbor");
+                String city = request.getParameter("city");
+                String state = request.getParameter("state");
+                if(complement == null){
+                    complement = "";
+                }
+                query = "UPDATE access.user_temp SET confirmation_date = NOW() WHERE email = ?";
+                resultTemp = sql.executeUpdate(query, new Object[]{email}, "Update temp user");
+                if (resultTemp > 0) {
+                    query = "INSERT INTO access.user (name, email, pass, rg, cpf, phone, address, birthday, cep, complement, neighbor, city, state) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    result = sql.executeUpdate(query, new Object[]{name, email, password, rg, cpf, phone, address, DateUtils.convertToTimestamp(birth), zcode, complement, neighbor, city, state}, "Insert user");
+                }
             }
         } catch (Exception e) {
             System.out.println("User register: " + e.getMessage());
+            sql.executeUpdate("ROLLBACK;");
         }
+        if (rows == null) {           
 %>
-
+{"re":0}
+<%
+} else if (rows.isEmpty()) {
+    sql.executeUpdate("ROLLBACK;");
+%>
+{"re":1}
+<%
+} else if (resultTemp == 0 || result == 0) {
+    sql.executeUpdate("ROLLBACK;");
+%>
+{"re":2}
+<%
+} else {
+    sql.executeUpdate("COMMIT;");
+%>
+{"re":3}
+<%
+    }
+%>
 <%
     }
 %>

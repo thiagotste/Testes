@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.br.library.utils;
 
 import java.sql.Timestamp;
@@ -10,28 +7,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-/**
- *
- * @author Thyago
- */
 public class DateUtils {
 
-    public static Timestamp convertToTimestamp(String dt) {
+    public static Timestamp convertToTimestamp(String dt) throws ParseException {
         Timestamp ts = null;
-        try {
-            DateFormat dateFormat = new SimpleDateFormat(
-                    "E MMM dd yyyy HH:mm:ss 'GMT'z", Locale.US);
+        DateFormat dateFormat = new SimpleDateFormat(
+                "E MMM dd yyyy HH:mm:ss 'GMT'z", Locale.US);
 
-            ts = new Timestamp(dateFormat.parse(dt).getTime());
-            return ts;
-        } catch (ParseException ex) {
-            System.out.println("Date Utils: " + ex.getMessage());
-        }
-
+        ts = new Timestamp(dateFormat.parse(dt).getTime());
         return ts;
     }
 

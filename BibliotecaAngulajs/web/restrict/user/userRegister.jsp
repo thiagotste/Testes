@@ -10,13 +10,13 @@
     try {
         query = "SELECT id FROM access.user_temp WHERE email = ?";
         rows = sql.executeQuery(query, new Object[]{email}, "Select temp user register");
-        if(!rows.isEmpty()){
+        if (!rows.isEmpty()) {
             query = "SELECT id FROM access.user WHERE email = ?";
             rows = sql.executeQuery(query, new Object[]{email}, "Select user register");
-            if(!rows.isEmpty()){
+            if (!rows.isEmpty()) {
                 response.sendError(403, "Email já cadastrado.");
             }
-        }else{
+        } else {
             response.sendError(403, "Precisa fazer o pré-cadastro.");
         }
     } catch (Exception e) {
@@ -41,7 +41,7 @@
     </head>
     <script>
         var email = "${param.email}";
-        var ctx = "<%= request.getContextPath() %>";
+        var ctx = "<%= request.getContextPath()%>";
     </script>
     <body ng-controller="userRegisterController">
         <%@include file="../../WEB-INF/jspf/mainHeader.jspf"%>        
@@ -51,7 +51,7 @@
                 <div class="form-row">
                     <div class="form-group col-9">
                         <label for="registerName">Nome Completo:</label>
-                        <input type="text" id="registerName" class="form-control" name="name" ng-model="register.name" ng-blur="nchange()" placeholder="Digite o nome." required>
+                        <input type="text" id="registerName" class="form-control" name="name" ng-model="register.name" placeholder="Digite o nome." required>
                     </div>
                     <div class="form-group col-3">
                         <label for="registerBirth">Data de Nascimento:</label>
@@ -79,7 +79,7 @@
                 <div class="form-row">
                     <div class="form-group col-2">
                         <label for="registerZCode">CEP:</label>
-                        <input type="text" id="registerZCode" class="form-control" name="zcode" ng-model="register.zcode" ng-change="zchange()" placeholder="Digite o CEP." required>
+                        <input type="text" id="registerZCode" class="form-control" name="zcode" ng-model="register.zcode" ng-blur="zblur(register.zcode)" placeholder="Digite o CEP." required>
                     </div>
                     <div class="form-group col-6">
                         <label for="registerAddress">Endereço:</label>
@@ -118,7 +118,10 @@
                         <input type="password" id="registerPass" class="form-control" name="password" ng-model="register.pass" placeholder="Digite a senha" required>
                     </div>                    
                 </div>
-                <button type="submit" class="btn btn-primary" ng-disabled="registerForm.$invalid">Registrar</button>                                
+                <div ng-show="loadingPost" ng-cloak><img style="width:15%;margin-left: 42%; margin-bottom: 5%;" src="<%= request.getContextPath()%>/res/images/icons/15.gif" alt=""/></div>
+                <div class="mx-auto text-center" ng-hide="loadingPost">
+                    <button type="submit" class="btn btn-primary btn-lg" ng-disabled="registerForm.$invalid">Registrar</button> 
+                </div>
             </form>
         </main>
         <script src="<%= request.getContextPath()%>/res/javascript/angular/angular.js"></script>

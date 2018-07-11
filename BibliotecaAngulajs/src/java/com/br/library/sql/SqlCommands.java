@@ -13,7 +13,7 @@ public class SqlCommands implements SqlMethodInterface {
         Connection conn = pool.getConnection();
         PreparedStatement ps;
         ArrayList<Object[]> rows = new ArrayList<>();
-        try {
+        try {            
             ps = conn.prepareStatement(query);
             if (parameters != null) {
                 for (int i = 0; i < parameters.length; i++) {
@@ -64,10 +64,10 @@ public class SqlCommands implements SqlMethodInterface {
     public int executeUpdate(String query, Object[] parameters, String id) {
         int result = 0;
         ConnectionPool pool = ConnectionPool.getInstance();
-        Connection conn = pool.getConnection();
+        Connection conn = pool.getConnection();        
         PreparedStatement ps;
 
-        try {
+        try {            
             ps = conn.prepareStatement(query);
             if (parameters != null) {
                 for (int i = 0; i < parameters.length; i++) {
@@ -99,5 +99,25 @@ public class SqlCommands implements SqlMethodInterface {
             pool.freeConnection(conn);
         }
         return result;
+    }
+
+    @Override
+    public int executeUpdate(String query){
+        int result = 0;
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection conn = pool.getConnection();        
+        PreparedStatement ps;
+        
+        try {
+            ps = conn.prepareStatement(query);
+            result = ps.executeUpdate();
+            ps.close();
+            return result;
+        } catch (Exception e) {
+            System.out.println("" + e.getMessage());
+            return result;
+        }finally {
+            pool.freeConnection(conn);
+        }
     }
 }

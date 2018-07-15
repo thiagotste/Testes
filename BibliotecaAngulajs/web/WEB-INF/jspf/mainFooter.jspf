@@ -50,7 +50,8 @@
         </div>
     </div>
     <%@include file="login.jspf" %>
-    <%@include file="tempRegister.jspf" %>
+    <%@include file="user/tempRegister.jspf" %>
+    <%@include file="user/forgotPassword.jspf" %>
     <%@include file="successModal.jspf" %>
     <%@include file="errorModal.jspf" %>
     <%@include file="unsuccessfulModal.jspf" %>

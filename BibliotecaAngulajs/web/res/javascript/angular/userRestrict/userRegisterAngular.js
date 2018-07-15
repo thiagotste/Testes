@@ -4,10 +4,10 @@ userAngular.factory('context', ['$window', function ($w) {
             ctx: $w.ctx
         };
     }]);
-userAngular.controller("userRegisterController", ["$scope", "$http", "postService","getService", "context", function ($scope, $http, postService, getService, context) {
+userAngular.controller("userRegisterController", ["$scope", "postService", "getService", "context", function ($scope, postService, getService, context) {
         $scope.register = {};
         $scope.register.email = window.email;
-        $scope.registerUser = function (register) {            
+        $scope.registerUser = function (register) {
             register.action = "userRegister";
             var url = context.ctx + "/data/user.jsp";
             postService.query(register, url).then(function (response) {
@@ -32,18 +32,14 @@ userAngular.controller("userRegisterController", ["$scope", "$http", "postServic
             });
 
         };
-//        $scope.nchange = function () {
-//            $scope.register.address = $("#registerAddress").val();
-//            $scope.register.neighbor = $("#registerNeighborhood").val();
-//            $scope.register.city = $("#registerCity").val();
-//        }
-        $scope.zblur = function (val) {            
+
+        $scope.zblur = function (val) {
             function form_wiping() {
                 $scope.register.address = "";
                 $scope.register.neighbor = "";
                 $scope.register.city = "";
                 $scope.register.state = "";
-            }            
+            }
             if (val) {
                 var cep = val.replace(/\D/g, '');
                 var validacep = /^[0-9]{8}$/;
@@ -54,7 +50,7 @@ userAngular.controller("userRegisterController", ["$scope", "$http", "postServic
                     $scope.register.state = "...";
                 }
                 getService.query("//viacep.com.br/ws/" + cep + "/json/").then(function (response) {
-                    if (!("erro" in response)) {                        
+                    if (!("erro" in response)) {
                         $scope.register.address = response.data.logradouro;
                         $scope.register.neighbor = response.data.bairro;
                         $scope.register.city = response.data.localidade;
@@ -116,6 +112,45 @@ userAngular.controller("userRegisterController", ["$scope", "$http", "postServic
                     $scope.register.cpf = "";
                     $("#registerCPF").attr("placeholder", "CPF inválido.");
                 }
+            }
+        };
+    }]);
+userAngular.controller("userRedefinePassController", ["$scope", "postService", "context", function ($scope, postService, context) {
+        $scope.forgotPass = function (value) {            
+            value.email = window.email.toString();
+            value.action = "forgotPass";
+            console.log(value);
+            var url = context.ctx + "/data/user.jsp";
+            postService.query(value, url).then(function (response) {
+                console.log(response.data);
+            }).catch(function (data) {
+                alert(data.status);
+            });
+
+        };
+        $scope.testPass = function (value) {
+            if ((value.nPassword !== value.nConPassword)) {
+                $scope.forgotForm.$invalid = true;
+                $scope.isMatch = false;
+            } else {
+                $scope.isMatch = true;
+            }
+            if (typeof value.nPassword !== "undefined") {
+                if (value.nPassword.length < 6) {
+                    $scope.forgotForm.$invalid = true;
+                    $scope.isMinimum = false;
+                } else {
+                    $scope.isMinimum = true;
+                }
+            }
+        };
+        $scope.testConPass = function (value) {
+            if ((value.nPassword && value.nConPassword) && (value.nPassword !== value.nConPassword)) {
+                $scope.forgotForm.$invalid = true;
+                $scope.isMatch = false;
+            } else {
+                $scope.isMatch = true;
+                $scope.testPass(value);
             }
         };
     }]);

@@ -31,27 +31,26 @@
                         method: 'POST'
                     }).done(function (response) {
                         $("#tempRegisterLoading").css("display", "none");
-                        $("#tempRegisterFooterButton").css("display", "flex");
-                        console.log(response);
-                        if(response.re === 0){
+                        $("#tempRegisterFooterButton").css("display", "flex");                        
+                        if (response.re === 0) {
                             $("#errorText").text("Falha do servidor. Erro x000. Tente de novo mais tarde.");
                             $("#errorModal").modal("show");
-                        }else if(response.re === 1){
+                        } else if (response.re === 1) {
                             $("#errorText").text("Falha do servidor. Erro x001. Tente de novo mais tarde.");
                             $("#errorModal").modal("show");
-                        }else if(response.re === 2){
+                        } else if (response.re === 2) {
                             $("#errorText").text("Falha do servidor. Erro x002. Tente de novo mais tarde.");
                             $("#errorModal").modal("show");
-                        }else if(response.re === 3){
+                        } else if (response.re === 3) {
                             $("#unsuccessfulText").text("Usuário já está cadastrado.");
                             $("#unsuccessfulModal").modal("show");
-                        }else if(response.re === 4){
+                        } else if (response.re === 4) {
                             $("#unsuccessfulText").text("Usuário já está pré-cadastrado. Para terminar o cadastro, use o link: ");
-                            $("#unsuccessfulText").append("<a href=\"<%= request.getContextPath()%>/restrict/user/userRegister.jsp?email="+email+"\">Cadastro</a>");
+                            $("#unsuccessfulText").append("<a href=\"<%= request.getContextPath()%>/restrict/user/userRegister.jsp?email=" + email + "\">Cadastro</a>");
                             $("#unsuccessfulModal").modal("show");
-                        }else{
+                        } else {
                             $("#successText").text("Para terminar o cadastro, use o link: ");
-                            $("#successText").append("<a href=\"<%= request.getContextPath()%>/restrict/user/userRegister.jsp?email="+email+"\">Cadastro</a>");
+                            $("#successText").append("<a href=\"<%= request.getContextPath()%>/restrict/user/userRegister.jsp?email=" + email + "\">Cadastro</a>");
                             $("#successModal").modal("show");
                         }
                     }).fail(function (data) {

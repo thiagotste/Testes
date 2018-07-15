@@ -64,6 +64,9 @@
         $("#registerLoginButton").click(function () {
             $("#login").modal("hide");
         });
+        $("#forgotLoginButton").click(function () {
+            $("#login").modal("hide");
+        });
     });
 </script>
 <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -86,7 +89,7 @@
                         <label for="loginPassword">Senha:</label>
                         <input id="loginPassword" title="Digite a senha." type="password" class="form-control input-login" name="password" placeholder="Digite a sua senha." required>
                     </div>
-                    <button type="button" class="btn btn-link mb-3 float-right">Esqueceu a senha?</button>
+                    <button type="button" id="forgotLoginButton" class="btn btn-link mb-3 float-right" data-toggle="modal" data-target="#forgotModal">Esqueceu a senha?</button>
                     <button type="submit" class="btn btn-outline-dark btn-sm mb-3 mx-auto buttonLogin">Entrar</button>
                     <button type="button" id="registerLoginButton" class="btn btn-link btn-sm mx-auto buttonLogin" data-toggle="modal" data-target="#tempRegister">Cadastrar-se</button>
                 </form>

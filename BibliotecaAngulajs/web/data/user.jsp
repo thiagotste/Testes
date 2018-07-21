@@ -1,3 +1,4 @@
+<%@page import="java.util.AbstractList"%>
 <%@page import="java.util.Locale"%>
 <%@page import="com.br.library.utils.DateUtils"%>
 <%@page import="java.sql.Timestamp"%>
@@ -20,7 +21,7 @@
     String error = null;
 %>
 <%
-    if (action.equals("tempRegister")  && method.equalsIgnoreCase("post")) {
+    if (action.equals("tempRegister") && method.equalsIgnoreCase("post")) {
         String email = request.getParameter("email");
         String password = md5.hashMD5(request.getParameter("password") + "&bis");
         int result = 0;
@@ -166,6 +167,63 @@
 } else {
 %>
 {"re":3}
+<%
+    }
+%>
+<%
+    }
+%>
+<%
+    if (action.equals("redefinePass") && method.equalsIgnoreCase("post")) {
+        String email = request.getParameter("email");
+        String password = md5.hashMD5(request.getParameter("nPassword") + "&bis");
+
+        SqlMethodInterface sql = new SqlCommands();
+        List<Object[]> tempRow = null;
+        List<Object[]> row = null;
+        String query = "";
+        int tempResult = 0;
+        int result = 0;
+        boolean isRedefine = false;
+        try {
+            sql.executeUpdate("BEGIN;");
+            query = "SELECT id FROM access.user_temp WHERE email = ?";
+            tempRow = sql.executeQuery(query, new Object[]{email}, "Select temp_user redefinePass");
+            if (!tempRow.isEmpty()) {
+                query = "UPDATE access.user_temp SET pass = ? WHERE email = ?";
+                tempResult = sql.executeUpdate(query, new Object[]{password, email}, "Update temp_user redefinePass");
+                query = "SELECT id FROM access.user WHERE email = ?";
+                row = sql.executeQuery(query, new Object[]{email}, "Select user redefinePass");
+                if (!row.isEmpty()) {
+                    query = "UPDATE access.user SET pass = ? WHERE email = ?";
+                    result = sql.executeUpdate(query, new Object[]{password, email}, "Update user redefinePass");
+                }
+            }
+            if ((!tempRow.isEmpty() && !row.isEmpty()) && (tempResult > 0 && result > 0)) {
+                sql.executeUpdate("COMMIT;");
+                isRedefine = true;
+            } else if ((!tempRow.isEmpty() && row.isEmpty()) && (tempResult > 0)) {
+                sql.executeUpdate("COMMIT;");
+                isRedefine = true;
+            } else {
+                sql.executeUpdate("ROLLBACK;");
+                isRedefine = false;
+            }
+        } catch (Exception e) {
+            System.out.println("redefinePass: " + e.getMessage());
+            sql.executeUpdate("ROLLBACK;");
+        }
+        if (tempRow == null || row == null) {
+%>
+{"re":0}
+<%
+} else if (isRedefine) {
+%>
+{"re":1}
+<%
+} else {
+%>
+{"re":2}
 <%
     }
 %>

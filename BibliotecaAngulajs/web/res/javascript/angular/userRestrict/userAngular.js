@@ -116,15 +116,29 @@ userAngular.controller("userRegisterController", ["$scope", "postService", "getS
         };
     }]);
 userAngular.controller("userRedefinePassController", ["$scope", "postService", "context", function ($scope, postService, context) {
-        $scope.forgotPass = function (value) {            
+        $scope.forgotPass = function (value) {
             value.email = window.email.toString();
-            value.action = "forgotPass";
-            console.log(value);
+            value.action = "redefinePass";
+
             var url = context.ctx + "/data/user.jsp";
             postService.query(value, url).then(function (response) {
-                console.log(response.data);
+                switch (response.data.re) {
+                    case 0:
+                        $("#errorText").text("Falha do servidor. Erro x000.");
+                        $("#errorModal").modal("show");
+                        break;
+
+                    case 2:
+                        $("#unsuccessfulText").text("Falha ao redefinir a senha. Tente de novo mais tarde.");
+                        $("#unsuccessfulModal").modal("show");
+                        break;
+                    default :
+                        $("#successText").text("Operação realizada com sucesso.");
+                        $("#successModal").modal("show");
+                        break;
+                }
             }).catch(function (data) {
-                alert(data.status);
+                alert(data);
             });
 
         };

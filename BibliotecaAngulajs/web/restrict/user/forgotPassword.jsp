@@ -33,7 +33,7 @@
     </head>
     <script>
         var email = "${param.email}";
-        var context = "<%= request.getContextPath() %>";
+        var ctx = "<%= request.getContextPath() %>";
     </script>
     <body ng-controller="userRedefinePassController">
         <%@include file="../../WEB-INF/jspf/mainHeader.jspf"%>
@@ -42,7 +42,7 @@
                 <h1>Redefinir Senha</h1>
                 <form name="forgotForm" ng-submit="forgotPass(forgot)" autocomplete="off">
                     <div class="form-group">
-                        <label for="nPassword">Nova Senha:</label>
+                        <label for="nPassword">Nova Senha:</label><span style="color: red;">*</span>
                         <input type="password" id="nPassword" name="npassword" ng-model="forgot.nPassword" ng-change="testPass(forgot)" class="form-control w-25" placeholder="Digite a nova senha." required>
                         <small class="text-muted">
                             <span ng-hide="isMinimum" style="color: red;">A senha deve ter no mínimo 6 caracteres.</span>
@@ -50,14 +50,16 @@
                         </small>
                     </div>                    
                     <div class="form-group">
-                        <label for="nConPassword">Confirme a senha:</label>
+                        <label for="nConPassword">Confirme a senha:</label><span style="color: red;">*</span>
                         <input type="password" id="nConPassword" name="nConPassword" ng-model="forgot.nConPassword" ng-change="testConPass(forgot)" class="form-control w-25" placeholder="Confirme a senha." required>
                         <small class="text-muted">
                             <span ng-hide="isMatch" style="color: red;">O campo deve ter o mesmo valor da senha.</span>
                             <span ng-show="isMatch">O campo deve ter o mesmo valor da senha.</span>
                         </small>
                     </div>
-                    <div>
+                    <p style="color: red;">* Campo obrigatório.</p>
+                    <div ng-show="loadingPost" ng-cloak><img style="width:10%; margin-bottom: 5%;" src="<%= request.getContextPath()%>/res/images/icons/15.gif" alt=""/></div>
+                    <div ng-hide="loadingPost">
                         <button type="submit" class="btn btn-primary" ng-disabled="forgotForm.$invalid">Enviar</button>
                     </div>
                 </form>
@@ -65,7 +67,7 @@
         </main>        
         <script src="<%= request.getContextPath()%>/res/javascript/jquery-3.3.1.js"></script>
         <script src="<%= request.getContextPath()%>/res/javascript/angular/angular.js"></script>
-        <script src="<%= request.getContextPath()%>/res/javascript/angular/userRestrict/userRegisterAngular.js"></script>
+        <script src="<%= request.getContextPath()%>/res/javascript/angular/userRestrict/userAngular.js"></script>
         <script src="<%= request.getContextPath()%>/res/javascript/popper-1.14.3.js"></script>
         <script src="<%= request.getContextPath()%>/res/javascript/bootstrap.js"></script>
         <%@include  file="../../WEB-INF/jspf/mainFooter.jspf" %>

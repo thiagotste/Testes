@@ -1,6 +1,9 @@
 package com.br.library.accsess;
+
 import java.io.Serializable;
-public class User implements Serializable{
+
+public class User implements Serializable {
+
     private long id;
     private String name;
     private String email;
@@ -13,9 +16,14 @@ public class User implements Serializable{
     private String address;
     private String birthday;
     private boolean superUser;
+    private String cep;
+    private String complement;
+    private String neighbor;
+    private String city;
+    private String state;
     private boolean librarian;
-    
-    public User(){
+
+    public User() {
         this.id = 0;
         this.name = "";
         this.email = "";
@@ -28,12 +36,18 @@ public class User implements Serializable{
         this.address = "";
         this.birthday = "";
         this.superUser = false;
+        this.cep = "";
+        this.complement = "";
+        this.neighbor = "";
+        this.city = "";
+        this.state = "";
         this.librarian = false;
     }
 
-    public User(int id, String name, String email, String pass, boolean enabled, 
-            String createDate, String rg, String cpf, String phone, String address, 
-            String birthday, boolean superUser, boolean librarian) {
+    public User(int id, String name, String email, String pass, boolean enabled,
+            String createDate, String rg, String cpf, String phone, String address,
+            String birthday, boolean superUser, String cep, String complement,
+            String neighbor, String city, String state, boolean librarian) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -46,6 +60,11 @@ public class User implements Serializable{
         this.address = address;
         this.birthday = birthday;
         this.superUser = superUser;
+        this.cep = cep;
+        this.complement = complement;
+        this.neighbor = neighbor;
+        this.city = city;
+        this.state = state;
         this.librarian = librarian;
     }
 
@@ -144,12 +163,62 @@ public class User implements Serializable{
     public void setSuperUser(boolean superUser) {
         this.superUser = superUser;
     }
-    
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getComplement() {
+        return complement;
+    }
+
+    public void setComplement(String complement) {
+        this.complement = complement;
+    }
+
+    public String getNeighbor() {
+        return neighbor;
+    }
+
+    public void setNeighbor(String neighbor) {
+        this.neighbor = neighbor;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     public boolean isLibrarian() {
         return librarian;
     }
 
     public void setLibrarian(boolean librarian) {
         this.librarian = librarian;
+    }
+
+    public String firstName() {
+        String[] nameArray = this.name.split(" ");
+        return nameArray[0];
+    }
+
+    public String fullAddress() {
+        return this.address + " " + this.complement + ", " + this.neighbor + ", "
+                + this.city + "/" + this.state + " - " + this.cep;
     }
 }

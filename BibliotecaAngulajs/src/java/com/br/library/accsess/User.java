@@ -16,7 +16,7 @@ public class User implements Serializable {
     private String address;
     private String birthday;
     private boolean superUser;
-    private String cep;
+    private String zcode;
     private String complement;
     private String neighbor;
     private String city;
@@ -36,7 +36,7 @@ public class User implements Serializable {
         this.address = "";
         this.birthday = "";
         this.superUser = false;
-        this.cep = "";
+        this.zcode = "";
         this.complement = "";
         this.neighbor = "";
         this.city = "";
@@ -46,7 +46,7 @@ public class User implements Serializable {
 
     public User(int id, String name, String email, String pass, boolean enabled,
             String createDate, String rg, String cpf, String phone, String address,
-            String birthday, boolean superUser, String cep, String complement,
+            String birthday, boolean superUser, String zcode, String complement,
             String neighbor, String city, String state, boolean librarian) {
         this.id = id;
         this.name = name;
@@ -60,7 +60,7 @@ public class User implements Serializable {
         this.address = address;
         this.birthday = birthday;
         this.superUser = superUser;
-        this.cep = cep;
+        this.zcode = zcode;
         this.complement = complement;
         this.neighbor = neighbor;
         this.city = city;
@@ -164,12 +164,12 @@ public class User implements Serializable {
         this.superUser = superUser;
     }
 
-    public String getCep() {
-        return cep;
+    public String getZcode() {
+        return zcode;
     }
 
-    public void setCep(String cep) {
-        this.cep = cep;
+    public void setZcode(String zcode) {
+        this.zcode = zcode;
     }
 
     public String getComplement() {
@@ -218,7 +218,7 @@ public class User implements Serializable {
     }
 
     public String fullAddress() {
-        return this.address + " " + this.complement + ", " + this.neighbor + ", "
-                + this.city + "/" + this.state + " - " + this.cep;
+        return this.address + ", " + this.complement + ", " + this.neighbor + ", "
+                + this.city + "/" + this.state + " - " + this.zcode;
     }
 }

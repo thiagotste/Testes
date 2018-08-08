@@ -8,6 +8,10 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>com.br.library.accsess.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ByteArrayStreamServlet</servlet-name>
+        <servlet-class>com.br.library.sql.ByteArrayStreamServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -17,6 +21,12 @@
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/Logout</url-pattern>
         <url-pattern>/restrict/user/Logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ByteArrayStreamServlet</servlet-name>
+        <url-pattern>/ByteArrayStream</url-pattern>
+        <url-pattern>/restrict/user/ByteArrayStream</url-pattern>
+        <!--<url-pattern>/res/javascript/angular/userRestrict/ByteArrayStream</url-pattern>-->
     </servlet-mapping>
     <session-config>
         <session-timeout>

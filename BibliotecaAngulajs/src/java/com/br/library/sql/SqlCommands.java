@@ -2,6 +2,8 @@ package com.br.library.sql;
 
 import java.sql.*;
 import com.br.library.conection.ConnectionPool;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -17,8 +19,11 @@ public class SqlCommands implements SqlMethodInterface {
             ps = conn.prepareStatement(query);
             if (parameters != null) {
                 for (int i = 0; i < parameters.length; i++) {
-                    if (parameters[i].getClass() == int.class) {
+                    if (parameters[i].getClass() == Integer.class) {
                         ps.setInt(i + 1, (int) parameters[i]);
+                    }
+                    if (parameters[i].getClass() == Long.class) {
+                        ps.setLong(i + 1, (long) parameters[i]);
                     }
                     if (parameters[i].getClass() == double.class) {
                         ps.setDouble(i + 1, (double) parameters[i]);
@@ -74,6 +79,9 @@ public class SqlCommands implements SqlMethodInterface {
                     if (parameters[i].getClass() == int.class) {
                         ps.setInt(i + 1, (int) parameters[i]);
                     }
+                    if (parameters[i].getClass() == Long.class) {
+                        ps.setLong(i + 1, (long) parameters[i]);
+                    }
                     if (parameters[i].getClass() == double.class) {
                         ps.setDouble(i + 1, (double) parameters[i]);
                     }
@@ -85,8 +93,14 @@ public class SqlCommands implements SqlMethodInterface {
                     }
                     if (parameters[i].getClass() == Timestamp.class) {
                         ps.setTimestamp(i + 1, (Timestamp) parameters[i]);
+                    }                    
+                    if (parameters[i].getClass() == InputStream.class) {                        
+                        ps.setBinaryStream(i + 1, (InputStream) parameters[i]);
+                    } 
+                    if (parameters[i].getClass() == FileInputStream.class) {                        
+                        ps.setBinaryStream(i + 1, (InputStream) parameters[i]);
                     }
-                    if (parameters[i].getClass() == InputStream.class) {
+                    if (parameters[i].getClass() == ByteArrayInputStream.class) {                        
                         ps.setBinaryStream(i + 1, (InputStream) parameters[i]);
                     }
                 }

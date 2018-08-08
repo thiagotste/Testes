@@ -1,3 +1,5 @@
+<%@page import="java.util.Iterator"%>
+<%@page import="com.br.library.accsess.User"%>
 <%@page import="java.util.AbstractList"%>
 <%@page import="java.util.Locale"%>
 <%@page import="com.br.library.utils.DateUtils"%>
@@ -9,6 +11,10 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.br.library.sql.SqlCommands" %>
 <%@page import="com.br.library.utils.EfetuaMd5" %>
+<%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
+<%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
+<%@page import="org.apache.commons.fileupload.FileItem"%>
+<%@page import="java.io.InputStream"%>
 <%@page contentType="application/json" pageEncoding="UTF-8"%>
 
 <%
@@ -19,6 +25,7 @@
     }
     EfetuaMd5 md5 = new EfetuaMd5();
     String error = null;
+    User u = (User) request.getSession().getAttribute("user");
 %>
 <%
     if (action.equals("tempRegister") && method.equalsIgnoreCase("post")) {
@@ -228,5 +235,43 @@
     }
 %>
 <%
+    }
+%>
+<%
+    if (action.equals("userAngularFileUpload") && method.equalsIgnoreCase("post")) {
+        if (u != null) {
+            boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+            List<FileItem> items = null;
+            InputStream inputImage = null;
+            try {
+                if (isMultipart) {
+                    items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+                    Iterator<FileItem> iter = items.iterator();
+                    while (iter.hasNext()) {
+                        FileItem item = iter.next();
+                        if (!item.isFormField()) {
+                            if ("image/jpeg".equals(item.getContentType())) {
+                                inputImage = item.getInputStream();
+                            } else if ("image/png".equals(item.getContentType())) {
+                                inputImage = item.getInputStream();
+                            }
+                        }
+                    }
+                    if(inputImage != null){
+                        SqlMethodInterface sql = new SqlCommands();                    
+                    String query = "UPDATE access.user SET image = ? WHERE id = ?";
+                    int result = sql.executeUpdate(query, new Object[]{inputImage, u.getId()}, "Atualizar usuaário com imagem");
+                    inputImage.close();
+                    } else {
+                        System.out.println("false");
+                    }
+                    
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+%>
+<%        }
     }
 %>

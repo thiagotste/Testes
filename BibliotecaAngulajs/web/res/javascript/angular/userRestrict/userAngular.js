@@ -1,4 +1,4 @@
-var userAngular = angular.module("userAngular", []);
+var userAngular = angular.module("userAngular", ['ngFileUpload']);
 userAngular.factory('context', ['$window', function ($w) {
         return {
             ctx: $w.ctx
@@ -64,7 +64,7 @@ userAngular.controller("userRegisterController", ["$scope", "postService", "getS
                 form_wiping();
             }
             /********************** FONTE: http://viacep.com.br/ *************************/
-        }
+        };
         $scope.cpfTest = function (value) {
             if (value) {
                 var cpf = value;
@@ -165,6 +165,33 @@ userAngular.controller("userRedefinePassController", ["$scope", "postService", "
             } else {
                 $scope.isMatch = true;
                 $scope.testPass(value);
+            }
+        };
+    }]);
+userAngular.controller('userAreaController', ['$scope', 'Upload', 'context', function ($scope, Upload, context) {
+        var val = 0;
+        $scope.sendFile = function (file) {
+            if ($scope.fileForm.file.$valid && file) {
+                
+                console.log(file);
+                Upload.upload({
+                    url: context.ctx + '/data/user.jsp?action=userAngularFileUpload',
+                    method: 'POST',
+                    data: {file: file},
+                    headers: {'content-type': undefined}
+                }).then(function (resp) {
+                    console.log(val);
+                    $("#imageUser").prop("src", context.ctx + "/ByteArrayStream?origin=userArea&val=" + val);
+                    ++val;
+                    console.log(val);
+//                    $scope.image = context.ctx + "/ByteArrayStream?origin=userArea";
+                    console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+                }, function (resp) {
+                    console.log('Error status: ' + resp.status);
+                }, function (evt) {
+                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+                });
             }
         };
     }]);

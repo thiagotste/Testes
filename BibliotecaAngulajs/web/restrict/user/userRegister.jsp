@@ -56,10 +56,10 @@
                     <div class="form-group col-3">
                         <label for="registerBirth">Data de Nascimento:</label><span style="color: red;">*</span>
                         <input type="date" id="registerBirth" class="form-control" name="birth" ng-model="register.birth" placeholder="dd/mm/aaaa" required>
-                        <div ng-show="registerForm.$submitted || registerForm.birth.$touched">
+                        <%-- <div ng-show="registerForm.$submitted || registerForm.birth.$touched">
                             <span ng-show="registerForm.birth.$error.required">Tell us your email.</span>
                             <span ng-show="registerForm.birth.$error.date">This is not a valid date.</span>
-                        </div>                        
+                        </div> --%>                      
                     </div>
                 </div>
                 <div class="form-row">

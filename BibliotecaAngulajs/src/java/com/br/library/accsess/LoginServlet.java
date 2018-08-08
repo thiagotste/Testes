@@ -25,7 +25,7 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         PrintWriter out = response.getWriter();
         try {
-            String query = "SELECT id, name, email, is_enabled, rg, cpf, phone, address, is_super_user, cep, complement, neighbor, city, state, (SELECT CASE WHEN count(*) = 0 THEN false WHEN count(*) = 1 THEN true END FROM library.librarian WHERE user_id = au.id) FROM access.user au WHERE email = ? AND pass = ?";
+            String query = "SELECT id, name, email, is_enabled, rg, cpf, phone, address, to_char(birthday, 'DD/MM/YYYY'), is_super_user, cep, complement, neighbor, city, state, (SELECT CASE WHEN count(*) = 0 THEN false WHEN count(*) = 1 THEN true END FROM library.librarian WHERE user_id = au.id) FROM access.user au WHERE email = ? AND pass = ?";
             rows = sql.executeQuery(query, new Object[]{email, password}, "Login Servlet");
             if (rows == null) {
                 out.print("{\"code\":0}");
@@ -43,13 +43,14 @@ public class LoginServlet extends HttpServlet {
                     user.setCpf((String) row[5]);
                     user.setPhone((String) row[6]);
                     user.setAddress((String) row[7]);
-                    user.setSuperUser((boolean) row[8]);
-                    user.setCep((String) row[9]);
-                    user.setComplement((String) row[10]);
-                    user.setNeighbor((String) row[11]);
-                    user.setCity((String) row[12]);
-                    user.setState((String) row[13]);
-                    user.setLibrarian((boolean) row[14]);
+                    user.setBirthday((String) row[8]);
+                    user.setSuperUser((boolean) row[9]);
+                    user.setZcode((String) row[10]);
+                    user.setComplement((String) row[11]);
+                    user.setNeighbor((String) row[12]);
+                    user.setCity((String) row[13]);
+                    user.setState((String) row[14]);
+                    user.setLibrarian((boolean) row[15]);
                     session.setAttribute("user", user);
                    
                     out.print("{\"code\":2}");

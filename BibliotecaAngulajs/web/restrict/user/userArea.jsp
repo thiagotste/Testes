@@ -1,5 +1,12 @@
+<%@page import="com.br.library.accsess.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+    User u = (User) request.getSession().getAttribute("user");
+    if(u == null){
+        response.sendError(403);
+    }
+%>
 <!DOCTYPE html>
 <html ng-app="userAngular">
     <head>

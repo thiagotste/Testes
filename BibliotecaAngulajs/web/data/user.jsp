@@ -243,6 +243,8 @@
             boolean isMultipart = ServletFileUpload.isMultipartContent(request);
             List<FileItem> items = null;
             InputStream inputImage = null;
+            int result = 0;
+            boolean isNotImage = false;
             try {
                 if (isMultipart) {
                     items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
@@ -257,21 +259,35 @@
                             }
                         }
                     }
-                    if(inputImage != null){
-                        SqlMethodInterface sql = new SqlCommands();                    
-                    String query = "UPDATE access.user SET image = ? WHERE id = ?";
-                    int result = sql.executeUpdate(query, new Object[]{inputImage, u.getId()}, "Atualizar usuaário com imagem");
-                    inputImage.close();
+                    if (inputImage != null) {
+                        SqlMethodInterface sql = new SqlCommands();
+                        String query = "UPDATE access.user SET image = ? WHERE id = ?";
+                        result = sql.executeUpdate(query, new Object[]{inputImage, u.getId()}, "Atualizar usuário com imagem");
+                        inputImage.close();
                     } else {
-                        System.out.println("false");
+                        isNotImage = true;                        
                     }
-                    
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println("userAngularFileUpload: " + e.getMessage());
             }
+            if (result == 0) {
+
 
 %>
-<%        }
+{"re":0}
+<%} else if (isNotImage) {
+%>
+{"re":1}
+<%
+} else {
+%>
+{"re":2}
+<%
+    }
+%>
+<%        } else {
+            response.sendError(403);
+        }
     }
 %>

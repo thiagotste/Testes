@@ -15,6 +15,12 @@
         <link rel="icon" type="image/png" sizes="96x96" href="<%= request.getContextPath()%>/res/images/icons/favicon-96x96.png">
         <link rel="stylesheet" href="<%= request.getContextPath()%>/res/css/bootstrap.css">
         <link rel="stylesheet" href="<%= request.getContextPath()%>/res/css/main.css">
+        <script src="<%= request.getContextPath()%>/res/javascript/jquery-3.3.1.js"></script>
+        <script src="<%= request.getContextPath()%>/res/javascript/jquery.inputmask.bundle.js"></script>
+        <script src="<%= request.getContextPath()%>/res/javascript/phone-codes/phone.js"></script>
+        <script src="<%= request.getContextPath()%>/res/javascript/phone-codes/phone-be.js"></script>
+        <script src="<%= request.getContextPath()%>/res/javascript/phone-codes/phone-ru.js"></script>
+        <script src="<%= request.getContextPath()%>/res/javascript/utilities.js"></script>
         <title>Minha Área</title>
     </head>
     <script>
@@ -27,8 +33,9 @@
                 <div class="row mt-5 ml-5">
                     <div class="col-md-3">
                         <form name="fileForm">
+                            <img ng-cloak src="<%= request.getContextPath()%>/res/images/icons/15.gif" ng-show="loadingPost">
                             <img id="imageUser" src="<%= request.getContextPath()%>/ByteArrayStream?origin=userArea" ng-show="fileForm.file.$pristine || fileForm.file.$error.pattern || fileForm.file.$invalid" class="img-thumbnail border-0 rounded-circle ml-5" width="100" height="100" alt="Foto do usuário" title="Foto do usuário">
-                            <img ng-cloak src="<%= request.getContextPath()%>/res/images/icons/15.gif" ngf-src="file" ng-show="fileForm.file.$dirty && !fileForm.file.$error.pattern && fileForm.file.$valid" class="img-thumbnail border-0 rounded-circle ml-5" width="100" height="100" alt="Foto do usuário" title="Foto do usuário">
+                            <img ng-cloak src="<%= request.getContextPath()%>/res/images/icons/15.gif" ngf-src="file" ng-show="fileForm.file.$dirty && !fileForm.file.$error.pattern && fileForm.file.$valid && !loadingPost" class="img-thumbnail border-0 rounded-circle ml-5" width="100" height="100" alt="Foto do usuário" title="Foto do usuário">
                             <button type="button" class="btn btn-link" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
                                     ngf-accept="'image/*'" ngf-max-size="4MB" ngf-model-invalid="errorFile" required>
                                 Selecionar
@@ -36,6 +43,11 @@
                             <button type="button" class="btn btn-link" ng-cloak ng-click="sendFile(file)" ng-show="fileForm.file.$dirty && !fileForm.file.$error.pattern && fileForm.file.$valid">
                                 Salvar
                             </button>
+                            <small ng-cloak class="text-muted d-block">
+                                <span ng-cloak ng-show="isImageError" style="color: red;">
+                                    {{errorMessage}}
+                                </span>
+                            </small>                            
                             <small ng-cloak class="text-muted d-block">
                                 <span ng-show="fileForm.file.$dirty && fileForm.file.$error.maxSize" style="color: red;">
                                     O arquivo é muito Grande {{errorFile.size / 1000000|number:1}}MB: máximo 2M.
@@ -59,7 +71,17 @@
                         <p class="font-weight-normal text-left">Data de Nscimento: <c:out value="${user.birthday}"/></p>
                     </div>
                     <div class="col-md-6">
-                        <p class="font-weight-normal text-left">Telefone: <c:out value="${user.phone}"/></p>
+                        <p class="font-weight-normal text-left" ng-hide="phoneChange">Telefone: <c:out value="${user.phone}"/> 
+                            <button type="button" class="btn btn-link" ng-click="phoneChange = true">Trocar</button>
+                        </p>                        
+                        <form name="phoneChangeForm" ng-cloak ng-show="phoneChange" ng-submit="submitPhoneChange(phone)">
+                            <div class="form-group">
+                                <label for="registerPhone">Telefone:</label>
+                                <input type="text" id="registerPhone" class="form-control" name="Phone" ng-model="phone" placeholder="(99)9999-9999 ou (99)99999-9999" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <button type="button" class="btn btn-secondary" ng-click="phoneChange = false; phone= ''">sair</button>
+                        </form>
                     </div>
                 </div>
                 <div class="row mt-4  ml-5">
@@ -77,7 +99,6 @@
                 </div>
             </div>
         </section>        
-        <script src="<%= request.getContextPath()%>/res/javascript/jquery-3.3.1.js"></script>
         <script src="<%= request.getContextPath()%>/res/javascript/angular/angular.js"></script>
         <script src="<%= request.getContextPath()%>/res/javascript/angular/ng-file-upload-shim.min.js"></script>
         <script src="<%= request.getContextPath()%>/res/javascript/angular/ng-file-upload.min.js"></script>

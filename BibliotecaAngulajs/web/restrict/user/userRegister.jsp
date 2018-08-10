@@ -126,6 +126,7 @@
             </form>
         </main>
         <script src="<%= request.getContextPath()%>/res/javascript/angular/angular.js"></script>
+        <script src="<%= request.getContextPath()%>/res/javascript/angular/ng-file-upload.min.js"></script>
         <script src="<%= request.getContextPath()%>/res/javascript/angular/userRestrict/userAngular.js"></script>
         <script src="<%= request.getContextPath()%>/res/javascript/popper-1.14.3.js"></script>
         <script src="<%= request.getContextPath()%>/res/javascript/bootstrap.js"></script>

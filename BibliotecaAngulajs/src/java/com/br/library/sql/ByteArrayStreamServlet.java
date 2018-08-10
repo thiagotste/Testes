@@ -46,6 +46,9 @@ public class ByteArrayStreamServlet extends HttpServlet {
                     }
                     break;
             }
+        } catch (NullPointerException ne) {
+            System.out.println("ByteArrayStreamServlet: " + ne.getMessage());
+            response.getWriter().print("{\"re\":3}");
         } catch (IOException ioe) {
             System.out.println("ByteArrayStreamServlet: " + ioe.getMessage());
         } catch (Exception e) {

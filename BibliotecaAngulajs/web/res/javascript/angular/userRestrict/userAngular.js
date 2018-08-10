@@ -168,31 +168,44 @@ userAngular.controller("userRedefinePassController", ["$scope", "postService", "
             }
         };
     }]);
-userAngular.controller('userAreaController', ['$scope', 'Upload', 'context', function ($scope, Upload, context) {
+userAngular.controller('userAreaController', ['$scope', 'Upload', 'context', '$timeout', function ($scope, Upload, context, $timeout) {
         var val = 0;
+        $scope.isImageError = false;
         $scope.sendFile = function (file) {
             if ($scope.fileForm.file.$valid && file) {
-                
-                console.log(file);
                 Upload.upload({
                     url: context.ctx + '/data/user.jsp?action=userAngularFileUpload',
                     method: 'POST',
                     data: {file: file},
                     headers: {'content-type': undefined}
-                }).then(function (resp) {
-                    console.log(val);
+                }).then(function (resp) {                    
                     $("#imageUser").prop("src", context.ctx + "/ByteArrayStream?origin=userArea&val=" + val);
-                    ++val;
-                    console.log(val);
-//                    $scope.image = context.ctx + "/ByteArrayStream?origin=userArea";
-                    console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+                    ++val; 
+                    if(resp.data.re === 0){
+                        $scope.isImageError = true;
+                        $scope.errorMessage = "Erro ao atualizar imagem. Tente de novo mais tarde.";
+                        $timeout(function () {
+                            $scope.isImageError = false;
+                        }, 4000);
+                    }else if(resp.data.re === 1){
+                        $scope.isImageError = true;
+                        $scope.errorMessage = "Erro ao enviar imagem. Tente de novo, por favor.";
+                        $timeout(function () {
+                            $scope.isImageError = false;
+                        }, 4000);
+                    }
+//                    console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data.re);
                 }, function (resp) {
-                    console.log('Error status: ' + resp.status);
+                    alert('Error status: ' + resp.status);
                 }, function (evt) {
                     var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                     console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
                 });
             }
+        };
+        $scope.phoneChange = false;
+        $scope.submitPhoneChange = function (value) {
+            console.log(value);
         };
     }]);
 userAngular.factory('postService', ['$http', function ($http) {

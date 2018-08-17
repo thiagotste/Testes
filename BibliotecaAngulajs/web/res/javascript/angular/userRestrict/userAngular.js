@@ -203,10 +203,18 @@ userAngular.controller('userAreaController', ['$scope', 'Upload', 'context', '$t
                 });
             }
         };
-        $scope.phoneChange = false;
+        $scope.isEmailChange = false;
+        $scope.submitEmailChange = function (value) {
+            console.log(value);
+        };
+        $scope.isPhoneChange = false;
         $scope.submitPhoneChange = function (value) {
             console.log(value);
         };
+        $scope.isAddressChange = false;
+        $scope.submitAddressChange = function (value) {
+            console.log(value);
+        }
     }]);
 userAngular.factory('postService', ['$http', function ($http) {
         return {

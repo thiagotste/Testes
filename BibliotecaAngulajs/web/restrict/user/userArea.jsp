@@ -25,6 +25,9 @@
     </head>
     <script>
         var ctx = "<%=request.getContextPath()%>";
+        var phone = "<c:out value="${user.phone}"/>";
+        var email = "<c:out value="${user.email}"/>";
+        var address = "<c:out value="${user.address}"/>";
     </script>
     <body ng-controller="userAreaController">
         <%@include file="../../WEB-INF/jspf/mainHeader.jspf"%>
@@ -33,9 +36,9 @@
                 <div class="row mt-5 ml-5">
                     <div class="col-md-3">
                         <form name="fileForm">
-                            <img ng-cloak src="<%= request.getContextPath()%>/res/images/icons/15.gif" ng-show="loadingPost">
+                            <img ng-cloak src="<%= request.getContextPath()%>/res/images/icons/15.gif" ng-show="isSendingImage">
                             <img id="imageUser" src="<%= request.getContextPath()%>/ByteArrayStream?origin=userArea" ng-show="fileForm.file.$pristine || fileForm.file.$error.pattern || fileForm.file.$invalid" class="img-thumbnail border-0 rounded-circle ml-5" width="100" height="100" alt="Foto do usuário" title="Foto do usuário">
-                            <img ng-cloak src="<%= request.getContextPath()%>/res/images/icons/15.gif" ngf-src="file" ng-show="fileForm.file.$dirty && !fileForm.file.$error.pattern && fileForm.file.$valid && !loadingPost" class="img-thumbnail border-0 rounded-circle ml-5" width="100" height="100" alt="Foto do usuário" title="Foto do usuário">
+                            <img ng-cloak src="<%= request.getContextPath()%>/res/images/icons/15.gif" ngf-src="file" ng-show="fileForm.file.$dirty && !fileForm.file.$error.pattern && fileForm.file.$valid && !isSendingImage" class="img-thumbnail border-0 rounded-circle ml-5" width="100" height="100" alt="Foto do usuário" title="Foto do usuário">
                             <button type="button" class="btn btn-link" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
                                     ngf-accept="'image/*'" ngf-max-size="4MB" ngf-model-invalid="errorFile" required>
                                 Selecionar
@@ -52,7 +55,7 @@
                                 <span ng-show="fileForm.file.$dirty && fileForm.file.$error.maxSize" style="color: red;">
                                     O arquivo é muito Grande {{errorFile.size / 1000000|number:1}}MB: máximo 2M.
                                 </span>
-                            </small>
+                            </small>                            
                         </form>
                     </div>
                     <div class="col-md-3">
@@ -60,9 +63,9 @@
                             <c:out value="${user.name}"/>
                         </p>
                     </div>
-                    <div class="col-md-6">
-                        <p class="font-weight-normal mt-4 text-left" ng-hide="isEmailChange">
-                            <c:out value="${user.email}"/>
+                    <div class="col-md-4">
+                        <p class="font-weight-normal mt-4 text-left" ng-cloak ng-hide="isEmailChange">
+                            {{textEmail}}
                             <button type="button" class="btn btn-link" ng-click="isEmailChange = true"ng-hide="isEmailChange">Trocar</button>
                         <form name="emailChangeForm" ng-cloak ng-show="isEmailChange" ng-submit="submitEmailChange(email)">
                             <div class="form-group">
@@ -74,22 +77,28 @@
                         </form>
                         </p>
                     </div>
+                    <div class="col-md-2">
+                        <a href="#" class="btn btn-outline-dark mt-4">Trocar Senha</a>
+                    </div>
                 </div>
                 <div class="row mt-4 ml-5">
                     <div class="col-md-6">
                         <p class="font-weight-normal text-left">Data de Nscimento: <c:out value="${user.birthday}"/></p>
                     </div>
                     <div class="col-md-6">
-                        <p class="font-weight-normal text-left" ng-hide="isPhoneChange">Telefone: <c:out value="${user.phone}"/> 
-                            <button type="button" class="btn btn-link" ng-click="isPhoneChange = true"ng-hide="isPhoneChange" >Trocar</button>
+                        <p class="font-weight-normal text-left" ng-cloak ng-hide="isChangingPhone">Telefone: {{textPhone}} 
+                            <button type="button" class="btn btn-link" ng-click="isChangingPhone = true"ng-hide="isPhoneChange" >Trocar</button>
                         </p>                        
-                        <form name="phoneChangeForm" ng-cloak ng-show="isPhoneChange" ng-submit="submitPhoneChange(phone)">
+                        <form name="phoneChangeForm" ng-cloak ng-show="isChangingPhone" ng-submit="submitPhoneChange(phone)">
                             <div class="form-group">
                                 <label for="registerPhone">Telefone:</label>
-                                <input type="text" id="registerPhone" class="form-control" name="Phone" ng-model="phone" placeholder="(99)9999-9999 ou (99)99999-9999" required>
+                                <input type="text" id="registerPhone" class="form-control" name="phone" ng-model="phone" placeholder="(99)9999-9999 ou (99)99999-9999" required>
                             </div>
-                            <button type="submit" class="btn btn-primary" ng-disabled="phoneChangeForm.$invalid">Salvar</button>
-                            <button type="button" class="btn btn-secondary" ng-click="isPhoneChange = false; phone = '';">sair</button>
+                            <img ng-cloak src="<%= request.getContextPath()%>/res/images/icons/15.gif" ng-show="isSendingPhone">
+                            <div ng-hide="isSendingPhone">
+                                <button type="submit" class="btn btn-primary" ng-disabled="phoneChangeForm.$invalid">Salvar</button>
+                            <button type="button" class="btn btn-secondary" ng-click="isChangingPhone = false; phone = '';">sair</button>
+                            </div>                            
                         </form>
                     </div>
                 </div>

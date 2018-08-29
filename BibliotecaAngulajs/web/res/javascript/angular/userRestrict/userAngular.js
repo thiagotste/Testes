@@ -168,26 +168,29 @@ userAngular.controller("userRedefinePassController", ["$scope", "postService", "
             }
         };
     }]);
-userAngular.controller('userAreaController', ['$scope', 'Upload', 'context', '$timeout', function ($scope, Upload, context, $timeout) {
+userAngular.controller('userAreaController', ['$scope', 'Upload', 'context', '$timeout', 'postService', function ($scope, Upload, context, $timeout, postService) {
         var val = 0;
         $scope.isImageError = false;
+        $scope.isSendingImage = false;
         $scope.sendFile = function (file) {
+            $scope.isSendingImage = true;
             if ($scope.fileForm.file.$valid && file) {
                 Upload.upload({
                     url: context.ctx + '/data/user.jsp?action=userAngularFileUpload',
                     method: 'POST',
                     data: {file: file},
                     headers: {'content-type': undefined}
-                }).then(function (resp) {                    
+                }).then(function (resp) {
+                    $scope.isSendingImage = false;
                     $("#imageUser").prop("src", context.ctx + "/ByteArrayStream?origin=userArea&val=" + val);
-                    ++val; 
-                    if(resp.data.re === 0){
+                    ++val;
+                    if (resp.data.re === 0) {
                         $scope.isImageError = true;
                         $scope.errorMessage = "Erro ao atualizar imagem. Tente de novo mais tarde.";
                         $timeout(function () {
                             $scope.isImageError = false;
                         }, 4000);
-                    }else if(resp.data.re === 1){
+                    } else if (resp.data.re === 1) {
                         $scope.isImageError = true;
                         $scope.errorMessage = "Erro ao enviar imagem. Tente de novo, por favor.";
                         $timeout(function () {
@@ -196,20 +199,38 @@ userAngular.controller('userAreaController', ['$scope', 'Upload', 'context', '$t
                     }
 //                    console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data.re);
                 }, function (resp) {
+                    $scope.isSendingImage = false;
                     alert('Error status: ' + resp.status);
                 }, function (evt) {
+                    $scope.isSendingImage = false;
                     var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                     console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
                 });
             }
         };
         $scope.isEmailChange = false;
+        $scope.textEmail = window.email;
         $scope.submitEmailChange = function (value) {
             console.log(value);
         };
-        $scope.isPhoneChange = false;
+        $scope.isChangingPhone = false;
+        $scope.isSendingPhone = false;
+        $scope.textPhone = window.phone;        
         $scope.submitPhoneChange = function (value) {
-            console.log(value);
+            console.log(value);            
+            if (value) {
+                $scope.isSendingPhone = true;
+                var selecionado = {phone: value, option: 'phone', action: 'userArea'};
+                var url = context.ctx + "/data/user.jsp";
+                postService.query(selecionado, url).then(function (response) {
+                    $scope.isSendingPhone = false;
+                    $scope.textPhone = value;
+                    console.log(response.data.re);
+                }).catch(function (data) {
+                    $scope.isSendingPhone = false;
+                    alert(data);
+                });
+            }
         };
         $scope.isAddressChange = false;
         $scope.submitAddressChange = function (value) {

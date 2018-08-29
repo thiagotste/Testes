@@ -25,7 +25,8 @@
     }
     EfetuaMd5 md5 = new EfetuaMd5();
     String error = null;
-    User u = (User) request.getSession().getAttribute("user");
+    HttpSession seesion = request.getSession();
+    User u = (User) seesion.getAttribute("user");
 %>
 <%
     if (action.equals("tempRegister") && method.equalsIgnoreCase("post")) {
@@ -265,7 +266,7 @@
                         result = sql.executeUpdate(query, new Object[]{inputImage, u.getId()}, "Atualizar usuário com imagem");
                         inputImage.close();
                     } else {
-                        isNotImage = true;                        
+                        isNotImage = true;
                     }
                 }
             } catch (Exception e) {
@@ -283,6 +284,44 @@
 } else {
 %>
 {"re":2}
+<%
+    }
+%>
+<%        } else {
+            response.sendError(403);
+        }
+    }
+%>
+<%
+    if (action.equals("userArea") && method.equalsIgnoreCase("post")) {
+        if (u != null) {
+            String option = request.getParameter("option");
+
+            SqlMethodInterface sql = new SqlCommands();
+            String query = "";
+            int result = 0;
+            try {
+                switch (option) {
+                    case "phone":
+                        String phone = request.getParameter("phone");
+                        query = "UPDATE access.user SET phone = ? WHERE id = ?";
+                        result = sql.executeUpdate(query, new Object[]{phone, u.getId()}, "User Area");
+                        if (result == 1) {
+                            u.setPhone(phone);
+                            seesion.setAttribute("user", u);
+                        }
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("userArea: " + e.getMessage());
+            }
+            if (result == 0) {
+%>
+{"re":0}
+<%
+} else {
+%>
+{"re":1}
 <%
     }
 %>

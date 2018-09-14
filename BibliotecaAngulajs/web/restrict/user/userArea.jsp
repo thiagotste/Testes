@@ -26,8 +26,7 @@
     <script>
         var ctx = "<%=request.getContextPath()%>";
         var phone = "<c:out value="${user.phone}"/>";
-        var email = "<c:out value="${user.email}"/>";
-        var address = "<c:out value="${user.address}"/>";
+        var address = "<c:out value="${user.getFullAddress()}"/>";
     </script>
     <body ng-controller="userAreaController">
         <%@include file="../../WEB-INF/jspf/mainHeader.jspf"%>
@@ -64,16 +63,23 @@
                         </p>
                     </div>
                     <div class="col-md-4">
-                        <p class="font-weight-normal mt-4 text-left" ng-cloak ng-hide="isEmailChange">
-                            {{textEmail}}
-                            <button type="button" class="btn btn-link" ng-click="isEmailChange = true"ng-hide="isEmailChange">Trocar</button>
-                        <form name="emailChangeForm" ng-cloak ng-show="isEmailChange" ng-submit="submitEmailChange(email)">
+                        <p class="font-weight-normal mt-4 text-left" ng-cloak ng-hide="isChangingEmail">
+                            <c:out value="${user.email}"/>
+                            <button type="button" class="btn btn-link" ng-click="isChangingEmail = true" ng-hide="isChangingEmail">Trocar</button>
+                        </p>
+                        <form name="emailChangeForm" ng-cloak ng-show="isChangingEmail" ng-submit="submitEmailChange(email)">
                             <div class="form-group">
                                 <label for="emailChange">Email:</label>
                                 <input id="emailChange" type="email" class="form-control" name="emailChange" ng-model="email" required>
+                                <small class="form-text text-muted" ng-show="isFailingEmailUpdate">
+                                    <span style="color: red;">Falha ao modificar o email. Tente de novo mais tarde.</span>
+                                </small>
                             </div>
-                            <button type="submit" class="btn btn-primary" ng-disabled="emailChangeForm.$invalid">Salvar</button>
-                            <button type="button" class="btn btn-secondary" ng-click="isEmailChange = false; email = '';">sair</button>
+                            <img ng-cloak src="<%= request.getContextPath()%>/res/images/icons/15.gif" ng-show="isSendingEmail">
+                            <div ng-hide="isSendingEmail">
+                                <button type="submit" class="btn btn-primary" ng-disabled="emailChangeForm.$invalid">Salvar</button>
+                                <button type="button" class="btn btn-secondary" ng-click="isChangingEmail = false; email = '';">sair</button>
+                            </div>
                         </form>
                         </p>
                     </div>
@@ -92,12 +98,15 @@
                         <form name="phoneChangeForm" ng-cloak ng-show="isChangingPhone" ng-submit="submitPhoneChange(phone)">
                             <div class="form-group">
                                 <label for="registerPhone">Telefone:</label>
-                                <input type="text" id="registerPhone" class="form-control" name="phone" ng-model="phone" placeholder="(99)9999-9999 ou (99)99999-9999" required>
+                                <input type="text" id="registerPhone" class="form-control" name="phone" ng-model="phone" ng-change="phoneLength(phone)" placeholder="(99)9999-9999 ou (99)99999-9999" required>
+                                <small class="form-text text-muted" ng-show="isFailingPhoneUpdate">
+                                    <span style="color: red;">Falha ao modificar o telefone. Tente de novo mais tarde.</span>
+                                </small>
                             </div>
                             <img ng-cloak src="<%= request.getContextPath()%>/res/images/icons/15.gif" ng-show="isSendingPhone">
                             <div ng-hide="isSendingPhone">
                                 <button type="submit" class="btn btn-primary" ng-disabled="phoneChangeForm.$invalid">Salvar</button>
-                            <button type="button" class="btn btn-secondary" ng-click="isChangingPhone = false; phone = '';">sair</button>
+                                <button type="button" class="btn btn-secondary" ng-click="isChangingPhone = false; phone = '';">sair</button>
                             </div>                            
                         </form>
                     </div>
@@ -112,13 +121,13 @@
                 </div>
                 <div class="row mt-4 mb-5  ml-5">
                     <div class="col-md-12">
-                        <p class="font-weight-normal text-left" ng-hide="isAddressChange">Endereço: <c:out value="${user.fullAddress()}"/>
-                            <button type="button" class="btn btn-link" ng-click="isAddressChange = true" ng-hide="isAddressChange">Trocar</button></p>
-                        <form name="addressChangeForm" ng-cloak ng-submit="submitAddressChange(AddressChange)" ng-show="isAddressChange">
+                        <p class="font-weight-normal text-left" ng-cloak ng-hide="isChangingAddress">Endereço: {{textAddress}}
+                            <button type="button" class="btn btn-link" ng-click="isChangingAddress = true" ng-hide="isChangingAddress">Trocar</button></p>
+                        <form name="addressChangeForm" ng-cloak ng-submit="submitAddressChange(AddressChange)" ng-show="isChangingAddress">
                             <div class="form-row">
                                 <div class="form-group col-md-2">
                                     <label for="zcodeChange">CEP:</label>
-                                    <input id="zcodeChange" type="text" class="form-control" name="zcodeChange" ng-model="AddressChange.zCode" ng-blur="" required>
+                                    <input id="zcodeChange" type="text" class="form-control" name="zcodeChange" ng-model="AddressChange.zcode" ng-blur="zblur(AddressChange)" required>
                                 </div>
                                 <div class="form-group col-md-5">
                                     <label for="addressChange">Endereço:</label>
@@ -126,13 +135,13 @@
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label for="complementChange">Complemento:</label>
-                                    <input id="complementChange" type="text" class="form-control" name="complementChange" ng-model="AddressChange.complement" required>
+                                    <input id="complementChange" type="text" class="form-control" name="complementChange" ng-model="AddressChange.complement">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <label for="neighborhoodChange">Bairro:</label>
-                                    <input id="neighborhoodChange" type="text" class="form-control" name="neighborhoodChange" ng-model="AddressChange.neighborhood" required>
+                                    <input id="neighborhoodChange" type="text" class="form-control" name="neighborhoodChange" ng-model="AddressChange.neighbor" required>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="neighborhoodChange">Cidade:</label>
@@ -140,15 +149,21 @@
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="stateChange">Estado:</label>
-                                    <select id="stateChange" class="form-control" name="stateChange" ng-model="AddressChange.state" required="">
+                                    <select id="stateChange" class="form-control" name="stateChange" ng-model="AddressChange.state" required>
                                         <option value="" selected disabled>Escolha um estado.</option>
                                         <option value="AM">Amazonas</option>
                                         <option value="SP">São Paulo</option>
                                     </select>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary" ng-disabled="addressChangeForm.$invald">Enviar</button>
-                            <button type="button" class="btn btn-secondary" ng-click="isAddressChange = false; AddressChange = null;">Sair</button>
+                            <small class="form-text text-muted" ng-show="isFailingAddressUpdate">
+                                <span style="color: red;">Falha ao modificar o endereço. Tente de novo mais tarde.</span>
+                            </small>
+                            <img ng-cloak src="<%= request.getContextPath()%>/res/images/icons/15.gif" ng-show="isSendingAddress">
+                            <div ng-hide="isSendingAddress">
+                                <button type="submit" class="btn btn-primary" ng-disabled="addressChangeForm.$invalid">Enviar</button>
+                                <button type="button" class="btn btn-secondary" ng-click="isChangingAddress = false; AddressChange = null;">Sair</button>
+                            </div>
                         </form>
                     </div>                                                            
                 </div>

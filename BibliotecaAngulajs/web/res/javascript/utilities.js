@@ -3,6 +3,7 @@ $(function () {
     $("#registerCPF").inputmask("999.999.999-99");
     $("#registerPhone").inputmask("(99)9999[9]-9999");
     $("#registerZCode").inputmask("99999-999");
+    $("#zcodeChange").inputmask("99999-999");
     
 //    function limpa_formulário_cep() {
 //        // Limpa valores do formulário de cep.

@@ -217,7 +217,7 @@ public class User implements Serializable {
         return nameArray[0];
     }
 
-    public String fullAddress() {
+    public String getFullAddress() {
         return this.address + ", " + this.complement + ", " + this.neighbor + ", "
                 + this.city + "/" + this.state + " - " + this.zcode;
     }

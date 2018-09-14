@@ -300,20 +300,41 @@
             SqlMethodInterface sql = new SqlCommands();
             String query = "";
             int result = 0;
+            int resultTemp = 0;
             try {
                 switch (option) {
                     case "phone":
                         String phone = request.getParameter("phone");
                         query = "UPDATE access.user SET phone = ? WHERE id = ?";
-                        result = sql.executeUpdate(query, new Object[]{phone, u.getId()}, "User Area");
+                        result = sql.executeUpdate(query, new Object[]{phone, u.getId()}, "User Area updating phone");
                         if (result == 1) {
                             u.setPhone(phone);
                             seesion.setAttribute("user", u);
                         }
                         break;
+                    case "email":
+                        sql.executeUpdate("BEGIN;");
+                        String email = request.getParameter("email");
+                        query = "UPDATE access.user_temp SET email = ? WHERE email = ?";
+                        resultTemp = sql.executeUpdate(query, new Object[]{email, u.getEmail()}, "User Area updating user_temp email");
+
+                        query = "UPDATE access.user SET email = ? WHERE email = ?";
+                        result = sql.executeUpdate(query, new Object[]{email, u.getEmail()}, "User Area updating user email");
+
+                        if (resultTemp == 1 && result == 1) {
+                            sql.executeUpdate("COMMIT;");
+                        } else {
+                            sql.executeUpdate("ROLLBACK;");
+                            result = 0;
+                        }
+                        break;
                 }
             } catch (Exception e) {
                 System.out.println("userArea: " + e.getMessage());
+                if (option.equals("email")) {
+                    sql.executeUpdate("ROLLBACK;");
+                    result = 0;
+                }
             }
             if (result == 0) {
 %>

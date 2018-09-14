@@ -51,7 +51,7 @@
                 <div class="form-row">
                     <div class="form-group col-9">
                         <label for="registerName">Nome Completo:</label><span style="color: red;">*</span>
-                        <input type="text" id="registerName" class="form-control" name="name" ng-model="register.name" placeholder="Digite o nome." required>
+                        <input type="text" id="registerName" class="form-control" name="name" maxlength="100" ng-model="register.name" placeholder="Digite o nome." required>
                     </div>
                     <div class="form-group col-3">
                         <label for="registerBirth">Data de Nascimento:</label><span style="color: red;">*</span>
@@ -79,25 +79,25 @@
                 <div class="form-row">
                     <div class="form-group col-2">
                         <label for="registerZCode">CEP:</label><span style="color: red;">*</span>
-                        <input type="text" id="registerZCode" class="form-control" name="zcode" ng-model="register.zcode" ng-blur="zblur(register.zcode)" placeholder="Digite o CEP." required>
+                        <input type="text" id="registerZCode" class="form-control" name="zcode" ng-model="register.zcode" ng-blur="zblur(register)" placeholder="Digite o CEP." required>
                     </div>
                     <div class="form-group col-6">
                         <label for="registerAddress">Endereço:</label><span style="color: red;">*</span>
-                        <input type="text" id="registerAddress" class="form-control" name="address" ng-model="register.address" placeholder="Digite o endereço." required>                    
+                        <input type="text" id="registerAddress" class="form-control" maxlength="250" name="address" ng-model="register.address" placeholder="Digite o endereço." required>                    
                     </div>
                     <div class="form-group col-2">
                         <label for="registerComplement">Complemento:</label>
-                        <input type="text" id="registerComplement" class="form-control" name="complement" ng-model="register.complement" placeholder="Ex. Apto...">
+                        <input type="text" id="registerComplement" class="form-control" maxlength="20" name="complement" ng-model="register.complement" placeholder="Ex. Apto...">
                     </div>
                     <div class="form-group col-2">
                         <label for="registerNeighborhood">Bairro:</label><span style="color: red;">*</span>
-                        <input type="text" id="registerNeighborhood" class="form-control" name="neighborhood" ng-model="register.neighbor" placeholder="Digite o bairro.">
+                        <input type="text" id="registerNeighborhood" class="form-control" maxlength="30" name="neighborhood" ng-model="register.neighbor" placeholder="Digite o bairro.">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col">
                         <label for="registerCity">Cidade:</label><span style="color: red;">*</span>
-                        <input type="text" id="registerCity" class="form-control" name="city" ng-model="register.city" placeholder="Digite a Cidade." required>
+                        <input type="text" id="registerCity" class="form-control" name="city" maxlength="30" ng-model="register.city" placeholder="Digite a Cidade." required>
                     </div>
                     <div class="form-group col">
                         <label for="registerState">Estado:</label><span style="color: red;">*</span>
@@ -111,7 +111,7 @@
                 <div class="form-row">
                     <div class="form-group col-6">
                         <label for="registerEmail">Email:</label><span style="color: red;">*</span>
-                        <input type="email" id="registerEmail" class="form-control" name="email" ng-model="register.email" placeholder="" readonly required>
+                        <input type="email" id="registerEmail" class="form-control" name="email" maxlength="250" ng-model="register.email" placeholder="" readonly required>
                     </div>
                     <div class="form-group col-6">
                         <label for="registerPass">Senha:</label><span style="color: red;">*</span>

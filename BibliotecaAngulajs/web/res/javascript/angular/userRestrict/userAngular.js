@@ -4,7 +4,7 @@ userAngular.factory('context', ['$window', function ($w) {
             ctx: $w.ctx
         };
     }]);
-userAngular.controller("userRegisterController", ["$scope", "postService", "getService", "context", function ($scope, postService, getService, context) {
+userAngular.controller("userRegisterController", ["$scope", "postService", "context", "zcodeService", function ($scope, postService, context, zcodeService) {
         $scope.register = {};
         $scope.register.email = window.email;
         $scope.registerUser = function (register) {
@@ -34,36 +34,7 @@ userAngular.controller("userRegisterController", ["$scope", "postService", "getS
         };
 
         $scope.zblur = function (val) {
-            function form_wiping() {
-                $scope.register.address = "";
-                $scope.register.neighbor = "";
-                $scope.register.city = "";
-                $scope.register.state = "";
-            }
-            if (val) {
-                var cep = val.replace(/\D/g, '');
-                var validacep = /^[0-9]{8}$/;
-                if (validacep.test(cep)) {
-                    $scope.register.address = "...";
-                    $scope.register.neighbor = "...";
-                    $scope.register.city = "...";
-                    $scope.register.state = "...";
-                }
-                getService.query("//viacep.com.br/ws/" + cep + "/json/").then(function (response) {
-                    if (!("erro" in response)) {
-                        $scope.register.address = response.data.logradouro;
-                        $scope.register.neighbor = response.data.bairro;
-                        $scope.register.city = response.data.localidade;
-                        $scope.register.state = response.data.uf;
-
-                    } else {
-                        form_wiping();
-                    }
-                });
-            } else {
-                form_wiping();
-            }
-            /********************** FONTE: http://viacep.com.br/ *************************/
+            zcodeService.code(val);
         };
         $scope.cpfTest = function (value) {
             if (value) {
@@ -168,7 +139,7 @@ userAngular.controller("userRedefinePassController", ["$scope", "postService", "
             }
         };
     }]);
-userAngular.controller('userAreaController', ['$scope', 'Upload', 'context', '$timeout', 'postService', function ($scope, Upload, context, $timeout, postService) {
+userAngular.controller('userAreaController', ['$scope', 'Upload', 'context', '$timeout', 'postService', 'getService', 'zcodeService', function ($scope, Upload, context, $timeout, postService, getService, zcodeService) {
         var val = 0;
         $scope.isImageError = false;
         $scope.isSendingImage = false;
@@ -208,34 +179,129 @@ userAngular.controller('userAreaController', ['$scope', 'Upload', 'context', '$t
                 });
             }
         };
-        $scope.isEmailChange = false;
-        $scope.textEmail = window.email;
+        $scope.isChangingEmail = false;
+        $scope.isSendingEmail = false;
+        $scope.isFailingEmailUpdate = false;
         $scope.submitEmailChange = function (value) {
             console.log(value);
+            if (value) {
+                $scope.isSendingEmail = true;
+                var selecionado = {email: value, option: 'email', action: 'userArea'};
+                var url = context.ctx + "/data/user.jsp";
+                postService.query(selecionado, url).then(function (response) {
+                    $scope.isSendingEmail = false;
+                    if (response.data.re === 0) {
+                        $scope.isFailingEmailUpdate = true;
+                        $timeout(() => $scope.isFailingEmailUpdate = false, 4000);
+                    } else {
+                        $("#successText").text("Email modificado. Clique em fechar para entrar com novo email.")
+                        $("#successModal").modal("show");
+                    }
+                }).catch(function (data) {
+                    $scope.isSendingEmail = false;
+                    alert(data);
+                });
+            }
+            $('#successModal').on('hidden.bs.modal', function () {
+                location.href = "Logout";
+            });
         };
         $scope.isChangingPhone = false;
         $scope.isSendingPhone = false;
-        $scope.textPhone = window.phone;        
+        $scope.isFailingPhoneUpdate = false;
+        $scope.textPhone = window.phone;
         $scope.submitPhoneChange = function (value) {
-            console.log(value);            
             if (value) {
                 $scope.isSendingPhone = true;
                 var selecionado = {phone: value, option: 'phone', action: 'userArea'};
                 var url = context.ctx + "/data/user.jsp";
                 postService.query(selecionado, url).then(function (response) {
                     $scope.isSendingPhone = false;
-                    $scope.textPhone = value;
-                    console.log(response.data.re);
+                    if (response.data.re === 0) {
+                        $scope.isFailingPhoneUpdate = true;
+                        $timeout(() => $scope.isFailingPhoneUpdate = false, 4000);
+                    } else {
+                        $scope.textPhone = value;
+                    }
                 }).catch(function (data) {
                     $scope.isSendingPhone = false;
                     alert(data);
                 });
             }
         };
-        $scope.isAddressChange = false;
+        $scope.phoneLength = (value) => {
+            if (typeof value !== "undefined") {
+                var phoneLength = 0;
+                for (var i = 0; i < value.length; i++) {
+                    if (value.charAt(i) !== "(" && value.charAt(i) !== ")" && value.charAt(i) !== "_" && value.charAt(i) !== "-") {
+                        ++phoneLength;
+                    }
+                }
+                if (phoneLength >= 10) {
+                    $scope.phoneChangeForm.$invalid = false;
+                } else {
+                    $scope.phoneChangeForm.$invalid = true;
+                }
+            }
+        };
+        $scope.isChangingAddress = false;
+        $scope.isSendingAddress = false;
+        $scope.isFailingAddressUpdate = false;
+        $scope.textAddress = window.address;
         $scope.submitAddressChange = function (value) {
             console.log(value);
+            if (typeof value !== "undefied") {
+                $scope.isSendingAddress = true;
+                var selecionado = value;
+                selecionado.option = "address";
+                selecionado.action = "userArea";
+                var url = context.ctx + "/data/user.jsp";
+                postService.query(selecionado, url).then(function (response) {
+
+                }).catch(function (data) {
+                    alert(data);
+                });
+            }
         }
+        $scope.zblur = function (val) {
+            zcodeService.code(val);
+        };
+    }]);
+userAngular.factory('zcodeService', ['getService', function (getService) {
+        return {
+            code: function (val) {
+                function form_wiping() {
+                    val.address = "";
+                    val.neighbor = "";
+                    val.city = "";
+                    val.state = "";
+                }
+                if (val.zcode) {
+                    var cep = val.zcode.replace(/\D/g, '');
+                    var validacep = /^[0-9]{8}$/;
+                    if (validacep.test(cep)) {
+                        val.address = "...";
+                        val.neighbor = "...";
+                        val.city = "...";
+                        val.state = "...";
+                    }
+                    getService.query("//viacep.com.br/ws/" + cep + "/json/").then(function (response) {
+                        if (!("erro" in response)) {
+                            val.address = response.data.logradouro;
+                            val.neighbor = response.data.bairro;
+                            val.city = response.data.localidade;
+                            val.state = response.data.uf;
+
+                        } else {
+                            form_wiping();
+                        }
+                    });
+                } else {
+                    form_wiping();
+                }
+                /********************** FONTE: http://viacep.com.br/ *************************/
+            }
+        };
     }]);
 userAngular.factory('postService', ['$http', function ($http) {
         return {

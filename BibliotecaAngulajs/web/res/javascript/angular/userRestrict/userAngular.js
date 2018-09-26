@@ -179,11 +179,79 @@ userAngular.controller('userAreaController', ['$scope', 'Upload', 'context', '$t
                 });
             }
         };
+        $scope.isNotCurrent = false;
+        $scope.changePasswordSubmit = function (value) {
+            if (typeof value.current !== 'undefined' && value.current !== '') {
+                var selecionado = {pass: value.current, option: "testCurrentPass", action: "userArea"};
+                var url = context.ctx + "/data/user.jsp";
+                postService.query(selecionado, url).then(function (response) {
+                    if (response.data.re === 0) {
+                        $("#errorText").text("Falha do servidor. Erro x000. Tente de novo mais tarde.");
+                        $("#errorModal").modal("show");
+                    } else if (response.data.re === 1) {
+                        $scope.isNotCurrent = true;
+                    } else {
+                        $scope.isNotCurrent = false;
+                        selecionado = value;
+                        selecionado.option = "changePass";
+                        selecionado.action = "userArea";
+                        postService.query(selecionado, url).then(function (response) {
+                            if (response.data.re === 0) {
+                                $("#errorText").text("Falha do servidor. Erro x000. Tente de novo mais tarde.");
+                                $("#errorModal").modal("show");
+                            } else if (response.data.re === 1) {
+                                $("#unsuccessfulText").text("Falha do servidor. Erro x001. Tente de novo mais tarde.");
+                                $("#unsuccessfulModal").modal("show");
+                            } else {
+                                console.log("aqui");
+                                $("#successText").text("Falha do servidor. Erro x000. Tente de novo mais tarde.");
+                                $("#successModal").modal("show");
+                            }
+                        }).catch(function (data) {
+                            console.log(data);
+                            alert(data);
+                        });
+                    }
+                    $('#successModal').on('hidden.bs.modal', function () {
+                        location.href = "Logout";
+                    });
+                }).catch(function (data) {
+                    console.log(data);
+                    alert(data);
+                });
+            }
+        };
+        $scope.isMatch = true;
+        $scope.isMinimum = true;
+        $scope.testPass = function (value) {
+            if ((value.new !== value.repeatNew)) {
+                $scope.changePasswordForm.$invalid = true;
+                $scope.isMatch = false;
+            } else {
+                $scope.isMatch = true;
+            }
+            if (typeof value.new !== "undefined") {
+                if (value.new.length < 6) {
+                    $scope.changePasswordForm.$invalid = true;
+                    $scope.isMinimum = false;
+                } else {
+                    $scope.isMinimum = true;
+                }
+            }
+        };
+        $scope.testConPass = function (value) {
+            if ((value.new && value.repeatNew) && (value.new !== value.repeatNew)) {
+                $scope.changePasswordForm.$invalid = true;
+                $scope.isMatch = false;
+            } else {
+                $scope.isMatch = true;
+                $scope.testPass(value);
+            }
+        };
         $scope.isChangingEmail = false;
         $scope.isSendingEmail = false;
         $scope.isFailingEmailUpdate = false;
         $scope.submitEmailChange = function (value) {
-            console.log(value);
             if (value) {
                 $scope.isSendingEmail = true;
                 var selecionado = {email: value, option: 'email', action: 'userArea'};
@@ -191,10 +259,13 @@ userAngular.controller('userAreaController', ['$scope', 'Upload', 'context', '$t
                 postService.query(selecionado, url).then(function (response) {
                     $scope.isSendingEmail = false;
                     if (response.data.re === 0) {
+                        $("#errorText").text("Falha do servidor. Erro x000. Tente De novo mais tarde.");
+                        $("#errorModal").modal("show");
+                    } else if (response.data.re === 1) {
                         $scope.isFailingEmailUpdate = true;
                         $timeout(() => $scope.isFailingEmailUpdate = false, 4000);
                     } else {
-                        $("#successText").text("Email modificado. Clique em fechar para entrar com novo email.")
+                        $("#successText").text("Email modificado. Clique em fechar para entrar com novo email.");
                         $("#successModal").modal("show");
                     }
                 }).catch(function (data) {
@@ -218,6 +289,9 @@ userAngular.controller('userAreaController', ['$scope', 'Upload', 'context', '$t
                 postService.query(selecionado, url).then(function (response) {
                     $scope.isSendingPhone = false;
                     if (response.data.re === 0) {
+                        $("#errorText").text("Falha do servidor. Erro x000. Tente De novo mais tarde.");
+                        $("#errorModal").modal("show");
+                    } else if (response.data.re === 1) {
                         $scope.isFailingPhoneUpdate = true;
                         $timeout(() => $scope.isFailingPhoneUpdate = false, 4000);
                     } else {
@@ -249,7 +323,6 @@ userAngular.controller('userAreaController', ['$scope', 'Upload', 'context', '$t
         $scope.isFailingAddressUpdate = false;
         $scope.textAddress = window.address;
         $scope.submitAddressChange = function (value) {
-            console.log(value);
             if (typeof value !== "undefied") {
                 $scope.isSendingAddress = true;
                 var selecionado = value;
@@ -257,12 +330,38 @@ userAngular.controller('userAreaController', ['$scope', 'Upload', 'context', '$t
                 selecionado.action = "userArea";
                 var url = context.ctx + "/data/user.jsp";
                 postService.query(selecionado, url).then(function (response) {
-
+                    $scope.isSendingAddress = false;
+                    if (response.data.re === 0) {
+                        $("#errorText").text("Falha do servidor. Erro x000. Tente De novo mais tarde.");
+                        $("#errorModal").modal("show");
+                    } else if (response.data.re === 1) {
+                        $scope.isFailingAddressUpdate = true;
+                        $timeout(() => $scope.isFailingAddressUpdate = false, 4000);
+                    } else {
+                        $scope.textAddress = response.data.address;
+                    }
                 }).catch(function (data) {
+                    $scope.isSendingAddress = false;
                     alert(data);
                 });
             }
-        }
+        };
+        $scope.isChanging = (val) => {
+            switch (val) {
+                case 'address':
+                    $scope.isChangingAddress = false;
+                    $scope.AddressChange = '';
+                    break;
+                case 'phone':
+                    $scope.isChangingPhone = false;
+                    $scope.phone = '';
+                    break;
+                case 'email':
+                    $scope.isChangingEmail = false;
+                    $scope.email = '';
+                    break;
+            }
+        };
         $scope.zblur = function (val) {
             zcodeService.code(val);
         };

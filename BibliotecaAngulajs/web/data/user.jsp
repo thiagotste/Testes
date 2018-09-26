@@ -50,7 +50,7 @@
         } catch (Exception e) {
             System.out.println("Temp Register: " + e.getMessage());
         }
-        if (temp == null) {
+        if (temp == null || result == -1) {
 %>
 {"re":0}
 <%
@@ -119,6 +119,11 @@
             sql.executeUpdate("ROLLBACK;");
         }
         if (rows == null) {
+%>
+{"re":0}
+<%
+} else if (resultTemp == -1 || result == -1) {
+    sql.executeUpdate("ROLLBACK;");
 %>
 {"re":0}
 <%
@@ -221,7 +226,7 @@
             System.out.println("redefinePass: " + e.getMessage());
             sql.executeUpdate("ROLLBACK;");
         }
-        if (tempRow == null || row == null) {
+        if (tempRow == null || row == null || result == -1 || tempResult == -1) {
 %>
 {"re":0}
 <%
@@ -272,7 +277,7 @@
             } catch (Exception e) {
                 System.out.println("userAngularFileUpload: " + e.getMessage());
             }
-            if (result == 0) {
+            if (result == -1) {
 
 
 %>
@@ -301,6 +306,7 @@
             String query = "";
             int result = 0;
             int resultTemp = 0;
+            List<Object[]> row;
             try {
                 switch (option) {
                     case "phone":
@@ -328,22 +334,83 @@
                             result = 0;
                         }
                         break;
+                    case "address":
+                        String zcode = request.getParameter("zcode");
+                        String address = request.getParameter("address");
+                        String complement = request.getParameter("complement");
+                        String neighbor = request.getParameter("neighbor");
+                        String city = request.getParameter("city");
+                        String state = request.getParameter("state");
+
+                        if (complement == null) {
+                            complement = "";
+                        }
+
+                        query = "UPDATE access.user SET address = ?, complement = ?, cep = ?, neighbor = ?, city = ?, state = ? WHERE id = ?";
+                        result = sql.executeUpdate(query, new Object[]{address, complement, zcode, neighbor, city, state, u.getId()}, "User Area updating user address");
+                        if (result == 1) {
+                            u.setAddress(address);
+                            u.setZcode(zcode);
+                            u.setNeighbor(neighbor);
+                            u.setComplement(complement);
+                            u.setCity(city);
+                            u.setState(state);
+
+                            seesion.setAttribute("user", u);
+                        }
+                        break;
+                    case "testCurrentPass":
+                        String pass = request.getParameter("pass");
+                        if (!pass.equals("")) {
+                            String hash = md5.hashMD5(pass + "&bis");
+                            query = "SELECT count(*) FROM access.user WHERE pass = ? AND email = ?";
+                            row = sql.executeQuery(query, new Object[]{hash, u.getEmail()}, "testCurrentPass");
+                            result = Integer.parseInt(row.get(0)[0].toString());
+                        }
+                        break;
+                    case "changePass":
+                        String newPass = md5.hashMD5(request.getParameter("new") + "&bis") ;
+                        sql.executeUpdate("BEGIN;");
+                        query = "UPDATE access.user_temp SET pass = ? WHERE email = ?";
+                        resultTemp = sql.executeUpdate(query, new Object[]{newPass, u.getEmail()}, "change Pass Temp");
+
+                        query = "UPDATE access.user SET pass = ? WHERE email = ?";
+                        result = sql.executeUpdate(query, new Object[]{newPass, u.getEmail()}, "change Pass");
+
+                        if (resultTemp == 0 || result == 0) {
+                            result = 0;
+                            sql.executeUpdate("ROLLBACK;");
+                        } else {
+                            seesion.invalidate();
+                            sql.executeUpdate("COMMIT;");
+                        }
+                        break;
                 }
             } catch (Exception e) {
                 System.out.println("userArea: " + e.getMessage());
-                if (option.equals("email")) {
+                if (option.equals("email") || option.equals("changePass")) {
                     sql.executeUpdate("ROLLBACK;");
                     result = 0;
                 }
             }
-            if (result == 0) {
+            if (result == -1) {
 %>
 {"re":0}
 <%
-} else {
+} else if(result == 0){
 %>
 {"re":1}
 <%
+}else {
+    if (option.equals("address")) {
+%>
+{"re":2, "address":"<%=u.getFullAddress()%>"}
+<%
+} else {
+%>
+{"re":2}
+<%
+        }
     }
 %>
 <%        } else {

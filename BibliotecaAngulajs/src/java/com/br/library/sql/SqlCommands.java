@@ -60,6 +60,9 @@ public class SqlCommands implements SqlMethodInterface {
         } catch (SQLException e) {
             System.out.println(id + ": " + e.getMessage());
             return null;
+        }catch (Exception ex){
+            System.out.println(id + ": " + ex.getMessage());
+            return null;
         } finally {
             pool.freeConnection(conn);
         }
@@ -109,6 +112,9 @@ public class SqlCommands implements SqlMethodInterface {
             ps.close();
         } catch (SQLException e) {
             System.out.println(id + ": " + e.getMessage());
+            result = -1;
+        } catch (Exception ex){
+            System.out.println(id + ": " + ex.getMessage());
         } finally {
             pool.freeConnection(conn);
         }

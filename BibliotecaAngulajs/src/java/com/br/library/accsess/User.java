@@ -1,5 +1,6 @@
 package com.br.library.accsess;
 
+import com.sun.org.apache.bcel.internal.Constants;
 import java.io.Serializable;
 
 public class User implements Serializable {
@@ -218,7 +219,12 @@ public class User implements Serializable {
     }
 
     public String getFullAddress() {
-        return this.address + ", " + this.complement + ", " + this.neighbor + ", "
+        if(!complement.equals("")){
+            return this.address + ", " + this.complement + ", "  + this.neighbor + ", "
                 + this.city + "/" + this.state + " - " + this.zcode;
+        } else{
+            return this.address + ", "  + this.neighbor + ", "
+                + this.city + "/" + this.state + " - " + this.zcode;
+        }
     }
 }

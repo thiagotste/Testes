@@ -22,7 +22,7 @@
         <section class="d-block">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div id="colTabs" class="col-md-3">
                         <div class="nav flex-column nav-pills collapse show" id="adminTabs" role="tablist" aria-orientation="vertical">
                             <a class="nav-link active" id="userAdminTab" data-toggle="pill" href="#userAdmin" role="tab" aria-controls="userAdmin" aria-selected="true">Usuários</a>
                             <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</a>
@@ -91,11 +91,13 @@
                     if ($("#colItem").hasClass("col-md-9")) {
                         $("#colButton").text("Mostrar Abas");
                         setTimeout(function () {
+                            $("#colTabs").removeClass("col-md-3");
                             $("#colItem").removeClass("col-md-9");
                             $("#colItem").addClass("col-md-12");
                         }, 200);
                     } else {
                         $("#colItem").removeClass("col-md-12");
+                        $("#colTabs").addClass("col-md-3");
                         $("#colItem").addClass("col-md-9");                        
                         $("#colButton").text("Esconder Abas");
                     }

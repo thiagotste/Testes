@@ -16,11 +16,13 @@
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
         <url-pattern>/restrict/user/Login</url-pattern>
-    </servlet-mapping>
+        <url-pattern>/restrict/admin/Login</url-pattern>
+    </servlet-mapping>    
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/Logout</url-pattern>
         <url-pattern>/restrict/user/Logout</url-pattern>
+        <url-pattern>/restrict/admin/Logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ByteArrayStreamServlet</servlet-name>

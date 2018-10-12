@@ -32,6 +32,7 @@
                                     Olá, <c:out value="${user.firstName()}"/>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="<%=request.getContextPath()%>/restrict/admin/adminArea.jsp">Área Administrativa</a>
                                     <a class="dropdown-item" href="<%=request.getContextPath()%>/restrict/user/userArea.jsp">Minha Área</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="Logout">Sair</a>

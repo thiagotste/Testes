@@ -329,6 +329,8 @@
 
                         if (resultTemp == 1 && result == 1) {
                             sql.executeUpdate("COMMIT;");
+                        } else if (resultTemp == -1 && result == -1) {
+                            sql.executeUpdate("ROLLBACK;");
                         } else {
                             sql.executeUpdate("ROLLBACK;");
                             result = 0;
@@ -369,7 +371,7 @@
                         }
                         break;
                     case "changePass":
-                        String newPass = md5.hashMD5(request.getParameter("new") + "&bis") ;
+                        String newPass = md5.hashMD5(request.getParameter("new") + "&bis");
                         sql.executeUpdate("BEGIN;");
                         query = "UPDATE access.user_temp SET pass = ? WHERE email = ?";
                         resultTemp = sql.executeUpdate(query, new Object[]{newPass, u.getEmail()}, "change Pass Temp");
@@ -379,6 +381,8 @@
 
                         if (resultTemp == 0 || result == 0) {
                             result = 0;
+                            sql.executeUpdate("ROLLBACK;");
+                        } else if (resultTemp == -1 || result == -1) {
                             sql.executeUpdate("ROLLBACK;");
                         } else {
                             seesion.invalidate();
@@ -390,18 +394,18 @@
                 System.out.println("userArea: " + e.getMessage());
                 if (option.equals("email") || option.equals("changePass")) {
                     sql.executeUpdate("ROLLBACK;");
-                    result = 0;
+                    result = -1;
                 }
             }
             if (result == -1) {
 %>
 {"re":0}
 <%
-} else if(result == 0){
+} else if (result == 0) {
 %>
 {"re":1}
 <%
-}else {
+} else {
     if (option.equals("address")) {
 %>
 {"re":2, "address":"<%=u.getFullAddress()%>"}
